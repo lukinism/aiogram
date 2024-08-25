@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
@@ -567,7 +566,7 @@ class Chat(TelegramObject):
         self,
         invite_link: str,
         name: Optional[str] = None,
-        expire_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        expire_date: Optional[DateTime] = None,
         member_limit: Optional[int] = None,
         creates_join_request: Optional[bool] = None,
         **kwargs: Any,
@@ -607,7 +606,7 @@ class Chat(TelegramObject):
     def create_invite_link(
         self,
         name: Optional[str] = None,
-        expire_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        expire_date: Optional[DateTime] = None,
         member_limit: Optional[int] = None,
         creates_join_request: Optional[bool] = None,
         **kwargs: Any,
@@ -1081,7 +1080,7 @@ class Chat(TelegramObject):
         user_id: int,
         permissions: ChatPermissions,
         use_independent_chat_permissions: Optional[bool] = None,
-        until_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        until_date: Optional[DateTime] = None,
         **kwargs: Any,
     ) -> RestrictChatMember:
         """
@@ -1149,7 +1148,7 @@ class Chat(TelegramObject):
     def ban(
         self,
         user_id: int,
-        until_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        until_date: Optional[DateTime] = None,
         revoke_messages: Optional[bool] = None,
         **kwargs: Any,
     ) -> BanChatMember:

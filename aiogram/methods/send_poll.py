@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
@@ -12,6 +11,7 @@ from ..client.default_annotations import (
     DefaultProtectContent,
 )
 from ..types import (
+    DateTime,
     ForceReply,
     InlineKeyboardMarkup,
     InputPollOption,
@@ -64,7 +64,7 @@ class SendPoll(TelegramMethod[Message]):
     """A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of *explanation_parse_mode*"""
     open_period: Optional[int] = None
     """Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with *close_date*."""
-    close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None
+    close_date: Optional[DateTime] = None
     """Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with *open_period*."""
     is_closed: Optional[bool] = None
     """Pass :code:`True` if the poll needs to be immediately closed. This can be useful for poll preview."""
@@ -115,7 +115,7 @@ class SendPoll(TelegramMethod[Message]):
             explanation_parse_mode: DefaultParseMode = None,
             explanation_entities: Optional[List[MessageEntity]] = None,
             open_period: Optional[int] = None,
-            close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+            close_date: Optional[DateTime] = None,
             is_closed: Optional[bool] = None,
             disable_notification: DefaultDisableNotification = None,
             protect_content: DefaultProtectContent = None,

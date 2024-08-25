@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 import io
 import pathlib
 from contextlib import asynccontextmanager
@@ -175,6 +174,7 @@ from ..types import (
     ChatMemberOwner,
     ChatMemberRestricted,
     ChatPermissions,
+    DateTime,
     Downloadable,
     File,
     ForceReply,
@@ -766,7 +766,7 @@ class Bot:
         self,
         chat_id: Union[int, str],
         user_id: int,
-        until_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        until_date: Optional[DateTime] = None,
         revoke_messages: Optional[bool] = None,
         request_timeout: Optional[int] = None,
     ) -> bool:
@@ -918,7 +918,7 @@ class Bot:
         self,
         chat_id: Union[int, str],
         name: Optional[str] = None,
-        expire_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        expire_date: Optional[DateTime] = None,
         member_limit: Optional[int] = None,
         creates_join_request: Optional[bool] = None,
         request_timeout: Optional[int] = None,
@@ -1295,7 +1295,7 @@ class Bot:
         chat_id: Union[int, str],
         invite_link: str,
         name: Optional[str] = None,
-        expire_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        expire_date: Optional[DateTime] = None,
         member_limit: Optional[int] = None,
         creates_join_request: Optional[bool] = None,
         request_timeout: Optional[int] = None,
@@ -2160,7 +2160,7 @@ class Bot:
         user_id: int,
         permissions: ChatPermissions,
         use_independent_chat_permissions: Optional[bool] = None,
-        until_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        until_date: Optional[DateTime] = None,
         request_timeout: Optional[int] = None,
     ) -> bool:
         """
@@ -2994,7 +2994,7 @@ class Bot:
         explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
-        close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        close_date: Optional[DateTime] = None,
         is_closed: Optional[bool] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,
@@ -4700,7 +4700,7 @@ class Bot:
     async def create_chat_subscription_invite_link(
         self,
         chat_id: Union[int, str],
-        subscription_period: Union[datetime.datetime, datetime.timedelta, int],
+        subscription_period: DateTime,
         subscription_price: int,
         name: Optional[str] = None,
         request_timeout: Optional[int] = None,

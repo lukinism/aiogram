@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Union
 
 from pydantic import Field
@@ -252,7 +251,9 @@ class Message(MaybeInaccessibleMessage):
     """*Optional*. The group has been migrated to a supergroup with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."""
     migrate_from_chat_id: Optional[int] = None
     """*Optional*. The supergroup has been migrated from a group with the specified identifier. This number may have more than 32 significant bits and some programming languages may have difficulty/silent defects in interpreting it. But it has at most 52 significant bits, so a signed 64-bit integer or double-precision float type are safe for storing this identifier."""
-    pinned_message: Optional[Union[Message, InaccessibleMessage]] = None
+    pinned_message: Optional[Union[InaccessibleMessage, Message]] = Field(
+        None, union_mode="left_to_right"
+    )
     """*Optional*. Specified message was pinned. Note that the Message object in this field will not contain further *reply_to_message* fields even if it itself is a reply."""
     invoice: Optional[Invoice] = None
     """*Optional*. Message is an invoice for a `payment <https://core.telegram.org/bots/api#payments>`_, information about the invoice. `More about payments » <https://core.telegram.org/bots/api#payments>`_"""
@@ -415,7 +416,7 @@ class Message(MaybeInaccessibleMessage):
             message_auto_delete_timer_changed: Optional[MessageAutoDeleteTimerChanged] = None,
             migrate_to_chat_id: Optional[int] = None,
             migrate_from_chat_id: Optional[int] = None,
-            pinned_message: Optional[Union[Message, InaccessibleMessage]] = None,
+            pinned_message: Optional[Union[InaccessibleMessage, Message]] = None,
             invoice: Optional[Invoice] = None,
             successful_payment: Optional[SuccessfulPayment] = None,
             refunded_payment: Optional[RefundedPayment] = None,
@@ -2206,7 +2207,7 @@ class Message(MaybeInaccessibleMessage):
         explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
-        close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        close_date: Optional[DateTime] = None,
         is_closed: Optional[bool] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,
@@ -2301,7 +2302,7 @@ class Message(MaybeInaccessibleMessage):
         explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
-        close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        close_date: Optional[DateTime] = None,
         is_closed: Optional[bool] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,

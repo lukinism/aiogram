@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
@@ -1663,7 +1662,7 @@ class ChatJoinRequest(TelegramObject):
         explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
-        close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        close_date: Optional[DateTime] = None,
         is_closed: Optional[bool] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,
@@ -1760,7 +1759,7 @@ class ChatJoinRequest(TelegramObject):
         explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
-        close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
+        close_date: Optional[DateTime] = None,
         is_closed: Optional[bool] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,
