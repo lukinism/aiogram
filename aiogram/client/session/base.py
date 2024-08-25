@@ -15,11 +15,13 @@ from typing import (
     Dict,
     Final,
     Optional,
+    Tuple,
     Type,
     cast,
 )
 
 from pydantic import ValidationError
+from pydantic_core._pydantic_core import to_json
 
 from aiogram.exceptions import (
     ClientDecodeError,
@@ -187,6 +189,7 @@ class BaseSession(abc.ABC):
         """
         Prepare value before send
         """
+        # TODO: remove in 3.14.0
         if value is None:
             return None
         if isinstance(value, str):

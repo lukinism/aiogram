@@ -1,3 +1,4 @@
+import warnings
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
@@ -7,6 +8,8 @@ from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.methods import TelegramMethod
 from aiogram.types import InputFile
+
+# TODO: remove in 3.14.0
 
 
 def _get_fake_bot(default: Optional[DefaultBotProperties] = None) -> Bot:
@@ -45,6 +48,13 @@ def deserialize_telegram_object(
     :param include_api_method_name: Whether to include the API method name in the result.
     :return: The deserialized Telegram object.
     """
+    warnings.warn(
+        "Using this function is deprecated. "
+        "This function will be removed in 3.14.0 version\n"
+        "Use `obj.model_dump` instead.",
+        category=DeprecationWarning,
+        stacklevel=2,
+    )
     extends = {}
     if include_api_method_name and isinstance(obj, TelegramMethod):
         extends["method"] = obj.__api_method__

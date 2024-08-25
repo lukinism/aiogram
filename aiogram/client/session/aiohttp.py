@@ -26,7 +26,7 @@ from aiogram.methods import TelegramMethod
 
 from ...exceptions import TelegramNetworkError
 from ...methods.base import TelegramType
-from ...types import InputFile
+from ..form import construct_form_data
 from .base import BaseSession
 
 if TYPE_CHECKING:
@@ -155,17 +155,14 @@ class AiohttpSession(BaseSession):
 
     def build_form_data(self, bot: Bot, method: TelegramMethod[TelegramType]) -> FormData:
         form = FormData(quote_fields=False)
-        files: Dict[str, InputFile] = {}
-        for key, value in method.model_dump(warnings=False).items():
-            value = self.prepare_value(value, bot=bot, files=files)
-            if not value:
-                continue
+        data, files = construct_form_data(method)
+        for key, value in data.items():
             form.add_field(key, value)
-        for key, value in files.items():
+        for key, file in files.items():
             form.add_field(
                 key,
-                value.read(bot),
-                filename=value.filename or key,
+                file.read(bot),
+                filename=file.filename or key,
             )
         return form
 

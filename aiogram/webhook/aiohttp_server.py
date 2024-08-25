@@ -10,6 +10,7 @@ from aiohttp.typedefs import Handler
 from aiohttp.web_middlewares import middleware
 
 from aiogram import Bot, Dispatcher, loggers
+from aiogram.client.form import construct_form_data
 from aiogram.methods import TelegramMethod
 from aiogram.methods.base import TelegramType
 from aiogram.types import InputFile
@@ -162,20 +163,18 @@ class BaseRequestHandler(ABC):
         payload = writer.append(result.__api_method__)
         payload.set_content_disposition("form-data", name="method")
 
-        files: Dict[str, InputFile] = {}
-        for key, value in result.model_dump(warnings=False).items():
-            value = bot.session.prepare_value(value, bot=bot, files=files)
-            if not value:
-                continue
+        data, files = construct_form_data(result)
+
+        for key, value in data.items():
             payload = writer.append(value)
             payload.set_content_disposition("form-data", name=key)
 
-        for key, value in files.items():
-            payload = writer.append(value.read(bot))
+        for key, file in files.items():
+            payload = writer.append(file.read(bot))
             payload.set_content_disposition(
                 "form-data",
                 name=key,
-                filename=value.filename or key,
+                filename=file.filename or key,
             )
 
         return writer

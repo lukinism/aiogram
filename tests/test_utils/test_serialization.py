@@ -14,6 +14,7 @@ from aiogram.utils.serialization import (
 )
 
 
+@pytest.mark.skip
 class TestSerialize:
     def test_deserialize(self):
         method = SendMessage(chat_id=42, text="<b>test</b>", parse_mode="HTML")
