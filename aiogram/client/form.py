@@ -60,37 +60,25 @@ def extract_files_from_model(model: BaseModel) -> Tuple[BaseModel, Dict[str, Inp
 
 
 def replace_default_props(model: BaseModel, *, props: DefaultBotProperties) -> BaseModel:
+    if not isinstance(model, BaseModel):  # simplify nested conditions
+        return model
     update = {}
     for field_name, field_info in model.model_fields.items():
         field_value = getattr(model, field_name)
-
         if is_default_prop(field_info):
             default_name = get_default_prop_name(field_info)
             replaced_value = props[default_name]
         elif isinstance(field_value, list):
-            replaced_value = [
-                (
-                    replace_default_props(value, props=props)
-                    if isinstance(value, BaseModel)
-                    else value
-                )
-                for value in field_value
-            ]
+            replaced_value = [replace_default_props(value, props=props) for value in field_value]
         elif isinstance(field_value, dict):
             replaced_value = {
-                key: (
-                    replace_default_props(value, props=props)
-                    if isinstance(value, BaseModel)
-                    else value
-                )
+                key: replace_default_props(value, props=props)
                 for key, value in field_value.items()
             }
         else:
             replaced_value = field_value
-
         if field_value != replaced_value:
             update[field_name] = replaced_value
-
     return model.model_copy(update=update)
 
 
