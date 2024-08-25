@@ -93,6 +93,7 @@ class DefaultBotProperties(BaseModel):
             prefer_large_media=link_preview.prefer_large_media or link_preview_prefer_large_media,
             show_above_text=link_preview.show_above_text or link_preview_show_above_text,
         )
+        link_preview = link_preview if link_preview.model_dump(exclude_none=True) else None
 
         super().__init__(
             parse_mode=parse_mode,
