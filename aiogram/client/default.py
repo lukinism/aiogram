@@ -8,10 +8,8 @@ if TYPE_CHECKING:
     from aiogram.types import LinkPreviewOptions
 
 
-# @dataclass ??
 class Default:
-    # Is not a dataclass because of JSON serialization.
-
+    # TODO: delete
     __slots__ = ("_name",)
 
     def __init__(self, name: str) -> None:

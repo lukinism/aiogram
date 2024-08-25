@@ -13,7 +13,6 @@ from aiogram import Bot, Dispatcher, loggers
 from aiogram.client.form import construct_form_data
 from aiogram.methods import TelegramMethod
 from aiogram.methods.base import TelegramType
-from aiogram.types import InputFile
 from aiogram.webhook.security import IPFilter
 
 
@@ -163,7 +162,7 @@ class BaseRequestHandler(ABC):
         payload = writer.append(result.__api_method__)
         payload.set_content_disposition("form-data", name="method")
 
-        data, files = construct_form_data(result)
+        data, files = construct_form_data(result, bot=bot)
 
         for key, value in data.items():
             payload = writer.append(value)

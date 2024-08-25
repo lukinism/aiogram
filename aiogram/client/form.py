@@ -1,12 +1,17 @@
 from __future__ import annotations
 
 import secrets
-from typing import Any, Dict, List, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple
 
 from pydantic import BaseModel
 from pydantic_core import to_json
 
+from aiogram.client.default import DefaultBotProperties
+from aiogram.client.default_annotations import get_default_prop_name, is_default_prop
 from aiogram.types import InputFile
+
+if TYPE_CHECKING:
+    from aiogram import Bot
 
 
 def extract_files_from_any(value: Any) -> Tuple[Any, Dict[str, InputFile]]:
@@ -54,9 +59,47 @@ def extract_files_from_model(model: BaseModel) -> Tuple[BaseModel, Dict[str, Inp
     return modified_model, model_files
 
 
-def construct_form_data(model: BaseModel) -> Tuple[Dict[str, str], Dict[str, InputFile]]:
+def replace_default_props(model: BaseModel, *, props: DefaultBotProperties) -> BaseModel:
+    update = {}
+    for field_name, field_info in model.model_fields.items():
+        field_value = getattr(model, field_name)
+
+        if is_default_prop(field_info):
+            default_name = get_default_prop_name(field_info)
+            replaced_value = props[default_name]
+        elif isinstance(field_value, list):
+            replaced_value = [
+                (
+                    replace_default_props(value, props=props)
+                    if isinstance(value, BaseModel)
+                    else value
+                )
+                for value in field_value
+            ]
+        elif isinstance(field_value, dict):
+            replaced_value = {
+                key: (
+                    replace_default_props(value, props=props)
+                    if isinstance(value, BaseModel)
+                    else value
+                )
+                for key, value in field_value.items()
+            }
+        else:
+            replaced_value = field_value
+
+        if field_value != replaced_value:
+            update[field_name] = replaced_value
+
+    return model.model_copy(update=update)
+
+
+def construct_form_data(
+    model: BaseModel, *, bot: Bot
+) -> Tuple[Dict[str, str], Dict[str, InputFile]]:
     form_data = {}
     model, files = extract_files_from_model(model)
+    model = replace_default_props(model, props=bot.default)
     for key, value in model.model_dump(exclude_none=True).items():
         form_data[key] = serialize_form_value(value)
     return form_data, files

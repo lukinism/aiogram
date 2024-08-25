@@ -155,7 +155,7 @@ class AiohttpSession(BaseSession):
 
     def build_form_data(self, bot: Bot, method: TelegramMethod[TelegramType]) -> FormData:
         form = FormData(quote_fields=False)
-        data, files = construct_form_data(method)
+        data, files = construct_form_data(method, bot=bot)
         for key, value in data.items():
             form.add_field(key, value)
         for key, file in files.items():
