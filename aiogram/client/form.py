@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import secrets
-from typing import TYPE_CHECKING, Any, Dict, List, Tuple
+from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 from pydantic import BaseModel
 from pydantic_core import to_json
@@ -67,7 +67,9 @@ def replace_default_props(model: BaseModel, *, props: DefaultBotProperties) -> B
         field_value = getattr(model, field_name)
         if is_default_prop(field_info):
             default_name = get_default_prop_name(field_info)
-            replaced_value = props[default_name]
+            replaced_value = field_value
+            if props[default_name] != props.model_fields[default_name].default:
+                replaced_value = props[default_name]
         elif isinstance(field_value, list):
             replaced_value = [replace_default_props(value, props=props) for value in field_value]
         elif isinstance(field_value, dict):
@@ -83,13 +85,16 @@ def replace_default_props(model: BaseModel, *, props: DefaultBotProperties) -> B
 
 
 def construct_form_data(
-    model: BaseModel, *, bot: Bot
-) -> Tuple[Dict[str, str], Dict[str, InputFile]]:
+    model: BaseModel,
+    *,
+    bot: Bot,
+    dumps: bool = True,  # TODO: remove in 3.14.0
+) -> Tuple[Dict[str, Union[str, Any]], Dict[str, InputFile]]:
     form_data = {}
     model, files = extract_files_from_model(model)
     model = replace_default_props(model, props=bot.default)
     for key, value in model.model_dump(exclude_none=True).items():
-        form_data[key] = serialize_form_value(value)
+        form_data[key] = serialize_form_value(value) if dumps else value
     return form_data, files
 
 

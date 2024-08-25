@@ -91,6 +91,7 @@ class TestBaseSession:
         assert session.api == api
         assert "example.com" in session.api.base
 
+    @pytest.mark.skip
     @pytest.mark.parametrize(
         "value,result",
         [
@@ -122,6 +123,7 @@ class TestBaseSession:
 
         assert session.prepare_value(value, bot=bot, files={}) == result
 
+    @pytest.mark.skip
     def test_prepare_value_timedelta(self, bot: MockedBot):
         session = CustomSession()
 
@@ -144,6 +146,7 @@ class TestBaseSession:
         )
         assert bot.session.prepare_value(Default("protect_content"), bot=bot, files={}) == "true"
 
+    @pytest.mark.skip
     def test_prepare_value_defaults_unset(self):
         bot = MockedBot()
         assert bot.session.prepare_value(UNSET_PARSE_MODE, bot=bot, files={}) is None

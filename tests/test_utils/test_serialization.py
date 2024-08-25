@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import pytest
-from pydantic_core import PydanticSerializationError
 
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ChatType, MessageEntityType, ParseMode
@@ -14,7 +13,7 @@ from aiogram.utils.serialization import (
 )
 
 
-@pytest.mark.skip
+@pytest.mark.filterwarnings("ignore::DeprecationWarning")
 class TestSerialize:
     def test_deserialize(self):
         method = SendMessage(chat_id=42, text="<b>test</b>", parse_mode="HTML")
@@ -33,9 +32,6 @@ class TestSerialize:
             link_preview_options=LinkPreviewOptions(is_disabled=True),
             entities=[MessageEntity(type=MessageEntityType.URL, length=19, offset=0)],
         )
-        with pytest.raises(PydanticSerializationError):
-            # https://github.com/aiogram/aiogram/issues/1450
-            message.model_dump_json(exclude_none=True)
 
         deserialized = deserialize_telegram_object(message)
         assert deserialized.data["link_preview_options"] == {"is_disabled": True}

@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 import abc
-import datetime
 import json
-import secrets
-from enum import Enum
 from http import HTTPStatus
 from types import TracebackType
 from typing import (
@@ -38,8 +35,6 @@ from aiogram.exceptions import (
 
 from ...methods import Response, TelegramMethod
 from ...methods.base import TelegramType
-from ...types import InputFile, TelegramObject
-from ..default import Default
 from ..telegram import PRODUCTION, TelegramAPIServer
 from .middlewares.manager import RequestMiddlewareManager
 
@@ -176,74 +171,6 @@ class BaseSession(abc.ABC):
         Stream reader
         """
         yield b""
-
-    def prepare_value(
-        self,
-        value: Any,
-        bot: Bot,
-        files: Dict[str, Any],
-        _dumps_json: bool = True,
-    ) -> Any:
-        """
-        Prepare value before send
-        """
-        # TODO: remove in 3.14.0
-        if value is None:
-            return None
-        if isinstance(value, str):
-            return value
-        if isinstance(value, Default):
-            default_value = bot.default[value.name]
-            return self.prepare_value(default_value, bot=bot, files=files, _dumps_json=_dumps_json)
-        if isinstance(value, InputFile):
-            key = secrets.token_urlsafe(10)
-            files[key] = value
-            return f"attach://{key}"
-        if isinstance(value, dict):
-            value = {
-                key: prepared_item
-                for key, item in value.items()
-                if (
-                    prepared_item := self.prepare_value(
-                        item, bot=bot, files=files, _dumps_json=False
-                    )
-                )
-                is not None
-            }
-            if _dumps_json:
-                return self.json_dumps(value)
-            return value
-        if isinstance(value, list):
-            value = [
-                prepared_item
-                for item in value
-                if (
-                    prepared_item := self.prepare_value(
-                        item, bot=bot, files=files, _dumps_json=False
-                    )
-                )
-                is not None
-            ]
-            if _dumps_json:
-                return self.json_dumps(value)
-            return value
-        if isinstance(value, datetime.timedelta):
-            now = datetime.datetime.now()
-            return str(round((now + value).timestamp()))
-        if isinstance(value, datetime.datetime):
-            return str(round(value.timestamp()))
-        if isinstance(value, Enum):
-            return self.prepare_value(value.value, bot=bot, files=files)
-        if isinstance(value, TelegramObject):
-            return self.prepare_value(
-                value.model_dump(warnings=False),
-                bot=bot,
-                files=files,
-                _dumps_json=_dumps_json,
-            )
-        if _dumps_json:
-            return self.json_dumps(value)
-        return value
 
     async def __call__(
         self,
