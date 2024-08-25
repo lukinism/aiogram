@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from ..types import InputFile
 from .base import TelegramMethod
@@ -28,7 +28,7 @@ class SetWebhook(TelegramMethod[bool]):
 
     url: str
     """HTTPS URL to send updates to. Use an empty string to remove webhook integration"""
-    certificate: Optional[InputFile] = None
+    certificate: Optional[Union[InputFile, str]] = None
     """Upload your public key certificate so that the root certificate in use can be checked. See our `self-signed guide <https://core.telegram.org/bots/self-signed>`_ for details."""
     ip_address: Optional[str] = None
     """The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS"""
@@ -49,7 +49,7 @@ class SetWebhook(TelegramMethod[bool]):
             __pydantic__self__,
             *,
             url: str,
-            certificate: Optional[InputFile] = None,
+            certificate: Optional[Union[InputFile, str]] = None,
             ip_address: Optional[str] = None,
             max_connections: Optional[int] = None,
             allowed_updates: Optional[List[str]] = None,

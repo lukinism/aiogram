@@ -54,7 +54,7 @@ class SendAudio(TelegramMethod[Message]):
     """Performer"""
     title: Optional[str] = None
     """Track name"""
-    thumbnail: Optional[InputFile] = None
+    thumbnail: Optional[Union[InputFile, str]] = None
     """Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass 'attach://<file_attach_name>' if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. :ref:`More information on Sending Files » <sending-files>`"""
     disable_notification: DefaultDisableNotification = None
     """Sends the message `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
@@ -98,7 +98,7 @@ class SendAudio(TelegramMethod[Message]):
             duration: Optional[int] = None,
             performer: Optional[str] = None,
             title: Optional[str] = None,
-            thumbnail: Optional[InputFile] = None,
+            thumbnail: Optional[Union[InputFile, str]] = None,
             disable_notification: DefaultDisableNotification = None,
             protect_content: DefaultProtectContent = None,
             message_effect_id: Optional[str] = None,

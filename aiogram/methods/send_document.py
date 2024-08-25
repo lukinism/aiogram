@@ -41,7 +41,7 @@ class SendDocument(TelegramMethod[Message]):
     """Unique identifier of the business connection on behalf of which the message will be sent"""
     message_thread_id: Optional[int] = None
     """Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"""
-    thumbnail: Optional[InputFile] = None
+    thumbnail: Optional[Union[InputFile, str]] = None
     """Thumbnail of the file sent; can be ignored if thumbnail generation for the file is supported server-side. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Ignored if the file is not uploaded using multipart/form-data. Thumbnails can't be reused and can be only uploaded as a new file, so you can pass 'attach://<file_attach_name>' if the thumbnail was uploaded using multipart/form-data under <file_attach_name>. :ref:`More information on Sending Files » <sending-files>`"""
     caption: Optional[str] = None
     """Document caption (may also be used when resending documents by *file_id*), 0-1024 characters after entities parsing"""
@@ -87,7 +87,7 @@ class SendDocument(TelegramMethod[Message]):
             document: Union[InputFile, str],
             business_connection_id: Optional[str] = None,
             message_thread_id: Optional[int] = None,
-            thumbnail: Optional[InputFile] = None,
+            thumbnail: Optional[Union[InputFile, str]] = None,
             caption: Optional[str] = None,
             parse_mode: DefaultParseMode = None,
             caption_entities: Optional[List[MessageEntity]] = None,

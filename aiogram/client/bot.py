@@ -2218,7 +2218,7 @@ class Bot:
         duration: Optional[int] = None,
         width: Optional[int] = None,
         height: Optional[int] = None,
-        thumbnail: Optional[InputFile] = None,
+        thumbnail: Optional[Union[InputFile, str]] = None,
         caption: Optional[str] = None,
         parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
@@ -2300,7 +2300,7 @@ class Bot:
         duration: Optional[int] = None,
         performer: Optional[str] = None,
         title: Optional[str] = None,
-        thumbnail: Optional[InputFile] = None,
+        thumbnail: Optional[Union[InputFile, str]] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
@@ -2514,7 +2514,7 @@ class Bot:
         document: Union[InputFile, str],
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
-        thumbnail: Optional[InputFile] = None,
+        thumbnail: Optional[Union[InputFile, str]] = None,
         caption: Optional[str] = None,
         parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
@@ -3205,7 +3205,7 @@ class Bot:
         duration: Optional[int] = None,
         width: Optional[int] = None,
         height: Optional[int] = None,
-        thumbnail: Optional[InputFile] = None,
+        thumbnail: Optional[Union[InputFile, str]] = None,
         caption: Optional[str] = None,
         parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
@@ -3286,7 +3286,7 @@ class Bot:
         message_thread_id: Optional[int] = None,
         duration: Optional[int] = None,
         length: Optional[int] = None,
-        thumbnail: Optional[InputFile] = None,
+        thumbnail: Optional[Union[InputFile, str]] = None,
         disable_notification: DefaultDisableNotification = None,
         protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
@@ -3506,7 +3506,7 @@ class Bot:
     async def set_chat_photo(
         self,
         chat_id: Union[int, str],
-        photo: InputFile,
+        photo: Union[InputFile, str],
         request_timeout: Optional[int] = None,
     ) -> bool:
         """
@@ -3731,7 +3731,7 @@ class Bot:
     async def set_webhook(
         self,
         url: str,
-        certificate: Optional[InputFile] = None,
+        certificate: Optional[Union[InputFile, str]] = None,
         ip_address: Optional[str] = None,
         max_connections: Optional[int] = None,
         allowed_updates: Optional[List[str]] = None,
@@ -3958,7 +3958,7 @@ class Bot:
     async def upload_sticker_file(
         self,
         user_id: int,
-        sticker: InputFile,
+        sticker: Union[InputFile, str],
         sticker_format: str,
         request_timeout: Optional[int] = None,
     ) -> File:

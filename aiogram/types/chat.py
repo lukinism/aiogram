@@ -1267,7 +1267,7 @@ class Chat(TelegramObject):
 
     def set_photo(
         self,
-        photo: InputFile,
+        photo: Union[InputFile, str],
         **kwargs: Any,
     ) -> SetChatPhoto:
         """

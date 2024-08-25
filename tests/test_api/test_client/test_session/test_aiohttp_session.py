@@ -147,7 +147,7 @@ class TestAiohttpSession:
             __returning__ = bool
 
             key: str
-            document: InputFile
+            document: Union[InputFile, str]
 
         session = AiohttpSession()
         form = session.build_form_data(
