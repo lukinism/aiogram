@@ -6,7 +6,6 @@ from typing import Any, Optional
 from pydantic import BaseModel
 
 from aiogram.enums import ParseMode
-
 from aiogram.types import LinkPreviewOptions
 
 

@@ -10,9 +10,7 @@ from aiogram.utils.text_decorations import (
     html_decoration,
     markdown_decoration,
 )
-from .custom import DateTime
-from .maybe_inaccessible_message import MaybeInaccessibleMessage
-from .reply_parameters import ReplyParameters
+
 from ..client.default_annotations import (
     DefaultAllowSendingWithoutReply,
     DefaultDisableNotification,
@@ -22,6 +20,9 @@ from ..client.default_annotations import (
     DefaultShowCaptionAboveMedia,
 )
 from ..enums import ContentType, ParseMode
+from .custom import DateTime
+from .maybe_inaccessible_message import MaybeInaccessibleMessage
+from .reply_parameters import ReplyParameters
 
 if TYPE_CHECKING:
     from ..methods import (

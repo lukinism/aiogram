@@ -47,7 +47,7 @@ class TelegramMethod(BotContextController, BaseModel, Generic[TelegramType], ABC
     model_config = ConfigDict(
         extra="allow",
         populate_by_name=True,
-        arbitrary_types_allowed=True,
+        arbitrary_types_allowed=False,
     )
 
     @model_validator(mode="before")

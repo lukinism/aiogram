@@ -13,7 +13,7 @@ class TelegramObject(BotContextController, BaseModel):
         validate_assignment=True,
         frozen=True,
         populate_by_name=True,
-        arbitrary_types_allowed=True,
+        arbitrary_types_allowed=False,
         defer_build=True,
     )
 

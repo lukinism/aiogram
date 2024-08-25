@@ -4,9 +4,9 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from .base import TelegramMethod
 from ..client.default_annotations import DefaultLinkPreviewOptions, DefaultParseMode
 from ..types import InlineKeyboardMarkup, Message, MessageEntity
+from .base import TelegramMethod
 
 
 class EditMessageText(TelegramMethod[Union[Message, bool]]):

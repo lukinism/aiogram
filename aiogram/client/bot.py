@@ -21,17 +21,7 @@ from typing import (
 import aiofiles
 
 from aiogram.utils.token import extract_bot_id, validate_token
-from .default import DefaultBotProperties
-from .default_annotations import (
-    DefaultAllowSendingWithoutReply,
-    DefaultDisableNotification,
-    DefaultLinkPreviewOptions,
-    DefaultParseMode,
-    DefaultProtectContent,
-    DefaultShowCaptionAboveMedia,
-)
-from .session.aiohttp import AiohttpSession
-from .session.base import BaseSession
+
 from ..enums import ParseMode
 from ..methods import (
     AddStickerToSet,
@@ -257,6 +247,17 @@ from ..types import (
     UserProfilePhotos,
     WebhookInfo,
 )
+from .default import DefaultBotProperties
+from .default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultLinkPreviewOptions,
+    DefaultParseMode,
+    DefaultProtectContent,
+    DefaultShowCaptionAboveMedia,
+)
+from .session.aiohttp import AiohttpSession
+from .session.base import BaseSession
 
 T = TypeVar("T")
 

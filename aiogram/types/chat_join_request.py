@@ -5,8 +5,6 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from .base import TelegramObject
-from .custom import DateTime
 from ..client.default_annotations import (
     DefaultAllowSendingWithoutReply,
     DefaultDisableNotification,
@@ -15,6 +13,8 @@ from ..client.default_annotations import (
     DefaultProtectContent,
     DefaultShowCaptionAboveMedia,
 )
+from .base import TelegramObject
+from .custom import DateTime
 
 if TYPE_CHECKING:
     from ..methods import (
