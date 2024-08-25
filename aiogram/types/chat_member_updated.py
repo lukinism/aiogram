@@ -5,9 +5,16 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
 from .base import TelegramObject
 from .custom import DateTime
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultLinkPreviewOptions,
+    DefaultParseMode,
+    DefaultProtectContent,
+    DefaultShowCaptionAboveMedia,
+)
 
 if TYPE_CHECKING:
     from ..methods import (
@@ -46,7 +53,6 @@ if TYPE_CHECKING:
     from .input_media_video import InputMediaVideo
     from .input_poll_option import InputPollOption
     from .labeled_price import LabeledPrice
-    from .link_preview_options import LinkPreviewOptions
     from .message_entity import MessageEntity
     from .reply_keyboard_markup import ReplyKeyboardMarkup
     from .reply_keyboard_remove import ReplyKeyboardRemove
@@ -144,22 +150,18 @@ class ChatMemberUpdated(TelegramObject):
         text: str,
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         entities: Optional[List[MessageEntity]] = None,
-        link_preview_options: Optional[Union[LinkPreviewOptions, Default]] = Default(
-            "link_preview"
-        ),
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        link_preview_options: DefaultLinkPreviewOptions = None,
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
-        disable_web_page_preview: Optional[Union[bool, Default]] = Default(
-            "link_preview_is_disabled"
-        ),
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
+        disable_web_page_preview: Optional[bool] = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendMessage:
@@ -223,20 +225,18 @@ class ChatMemberUpdated(TelegramObject):
         height: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendAnimation:
@@ -306,20 +306,20 @@ class ChatMemberUpdated(TelegramObject):
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         duration: Optional[int] = None,
         performer: Optional[str] = None,
         title: Optional[str] = None,
         thumbnail: Optional[InputFile] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendAudio:
@@ -388,14 +388,14 @@ class ChatMemberUpdated(TelegramObject):
         message_thread_id: Optional[int] = None,
         last_name: Optional[str] = None,
         vcard: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendContact:
@@ -454,17 +454,17 @@ class ChatMemberUpdated(TelegramObject):
         message_thread_id: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         disable_content_type_detection: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendDocument:
@@ -525,12 +525,12 @@ class ChatMemberUpdated(TelegramObject):
         game_short_name: str,
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendGame:
@@ -600,12 +600,12 @@ class ChatMemberUpdated(TelegramObject):
         send_phone_number_to_provider: Optional[bool] = None,
         send_email_to_provider: Optional[bool] = None,
         is_flexible: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendInvoice:
@@ -699,14 +699,14 @@ class ChatMemberUpdated(TelegramObject):
         live_period: Optional[int] = None,
         heading: Optional[int] = None,
         proximity_alert_radius: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendLocation:
@@ -767,11 +767,11 @@ class ChatMemberUpdated(TelegramObject):
         media: List[Union[InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo]],
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendMediaGroup:
@@ -821,20 +821,18 @@ class ChatMemberUpdated(TelegramObject):
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendPhoto:
@@ -896,26 +894,26 @@ class ChatMemberUpdated(TelegramObject):
         options: List[Union[InputPollOption, str]],
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
-        question_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        question_parse_mode: DefaultParseMode = None,
         question_entities: Optional[List[MessageEntity]] = None,
         is_anonymous: Optional[bool] = None,
         type: Optional[str] = None,
         allows_multiple_answers: Optional[bool] = None,
         correct_option_id: Optional[int] = None,
         explanation: Optional[str] = None,
-        explanation_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
         close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
         is_closed: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendPoll:
@@ -992,14 +990,14 @@ class ChatMemberUpdated(TelegramObject):
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
         emoji: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendDice:
@@ -1051,14 +1049,14 @@ class ChatMemberUpdated(TelegramObject):
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
         emoji: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendSticker:
@@ -1118,14 +1116,14 @@ class ChatMemberUpdated(TelegramObject):
         foursquare_type: Optional[str] = None,
         google_place_id: Optional[str] = None,
         google_place_type: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVenue:
@@ -1195,21 +1193,19 @@ class ChatMemberUpdated(TelegramObject):
         height: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
         supports_streaming: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVideo:
@@ -1283,14 +1279,14 @@ class ChatMemberUpdated(TelegramObject):
         duration: Optional[int] = None,
         length: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVideoNote:
@@ -1348,17 +1344,17 @@ class ChatMemberUpdated(TelegramObject):
         business_connection_id: Optional[str] = None,
         message_thread_id: Optional[int] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         duration: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVoice:

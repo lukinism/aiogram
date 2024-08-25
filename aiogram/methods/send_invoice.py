@@ -4,7 +4,11 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultProtectContent,
+)
 from ..types import InlineKeyboardMarkup, LabeledPrice, Message, ReplyParameters
 from .base import TelegramMethod
 
@@ -65,9 +69,9 @@ class SendInvoice(TelegramMethod[Message]):
     """Pass :code:`True` if the user's email address should be sent to the provider. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_."""
     is_flexible: Optional[bool] = None
     """Pass :code:`True` if the final price depends on the shipping method. Ignored for payments in `Telegram Stars <https://t.me/BotNews/90>`_."""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends the message `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[Union[bool, Default]] = Default("protect_content")
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the sent message from forwarding and saving"""
     message_effect_id: Optional[str] = None
     """Unique identifier of the message effect to be added to the message; for private chats only"""
@@ -75,7 +79,7 @@ class SendInvoice(TelegramMethod[Message]):
     """Description of the message to reply to"""
     reply_markup: Optional[InlineKeyboardMarkup] = None
     """A JSON-serialized object for an `inline keyboard <https://core.telegram.org/bots/features#inline-keyboards>`_. If empty, one 'Pay :code:`total price`' button will be shown. If not empty, the first button must be a Pay button."""
-    allow_sending_without_reply: Optional[bool] = Field(
+    allow_sending_without_reply: DefaultAllowSendingWithoutReply = Field(
         None, json_schema_extra={"deprecated": True}
     )
     """Pass :code:`True` if the message should be sent even if the specified replied-to message is not found
@@ -118,12 +122,12 @@ class SendInvoice(TelegramMethod[Message]):
             send_phone_number_to_provider: Optional[bool] = None,
             send_email_to_provider: Optional[bool] = None,
             is_flexible: Optional[bool] = None,
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             message_effect_id: Optional[str] = None,
             reply_parameters: Optional[ReplyParameters] = None,
             reply_markup: Optional[InlineKeyboardMarkup] = None,
-            allow_sending_without_reply: Optional[bool] = None,
+            allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
             reply_to_message_id: Optional[int] = None,
             **__pydantic_kwargs: Any,
         ) -> None:

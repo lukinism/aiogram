@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
+from ..client.default_annotations import DefaultDisableNotification
 from .base import TelegramObject
 from .custom import DateTime
 
@@ -906,7 +907,7 @@ class Chat(TelegramObject):
         self,
         message_id: int,
         business_connection_id: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
+        disable_notification: DefaultDisableNotification = None,
         **kwargs: Any,
     ) -> PinChatMessage:
         """

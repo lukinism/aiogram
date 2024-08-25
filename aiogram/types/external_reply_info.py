@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
+from ..client.default_annotations import DefaultLinkPreviewOptions
 from .base import TelegramObject
 
 if TYPE_CHECKING:
@@ -15,7 +16,6 @@ if TYPE_CHECKING:
     from .giveaway import Giveaway
     from .giveaway_winners import GiveawayWinners
     from .invoice import Invoice
-    from .link_preview_options import LinkPreviewOptions
     from .location import Location
     from .message_origin_channel import MessageOriginChannel
     from .message_origin_chat import MessageOriginChat
@@ -47,7 +47,7 @@ class ExternalReplyInfo(TelegramObject):
     """*Optional*. Chat the original message belongs to. Available only if the chat is a supergroup or a channel."""
     message_id: Optional[int] = None
     """*Optional*. Unique message identifier inside the original chat. Available only if the original chat is a supergroup or a channel."""
-    link_preview_options: Optional[LinkPreviewOptions] = None
+    link_preview_options: DefaultLinkPreviewOptions = None
     """*Optional*. Options used for link preview generation for the original message, if it is a text message"""
     animation: Optional[Animation] = None
     """*Optional*. Message is an animation, information about the animation"""
@@ -102,7 +102,7 @@ class ExternalReplyInfo(TelegramObject):
             ],
             chat: Optional[Chat] = None,
             message_id: Optional[int] = None,
-            link_preview_options: Optional[LinkPreviewOptions] = None,
+            link_preview_options: DefaultLinkPreviewOptions = None,
             animation: Optional[Animation] = None,
             audio: Optional[Audio] = None,
             document: Optional[Document] = None,

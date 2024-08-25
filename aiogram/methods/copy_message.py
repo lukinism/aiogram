@@ -4,7 +4,13 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultParseMode,
+    DefaultProtectContent,
+    DefaultShowCaptionAboveMedia,
+)
 from ..types import (
     ForceReply,
     InlineKeyboardMarkup,
@@ -37,15 +43,15 @@ class CopyMessage(TelegramMethod[MessageId]):
     """Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"""
     caption: Optional[str] = None
     """New caption for media, 0-1024 characters after entities parsing. If not specified, the original caption is kept"""
-    parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    parse_mode: DefaultParseMode = None
     """Mode for parsing entities in the new caption. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     caption_entities: Optional[List[MessageEntity]] = None
     """A JSON-serialized list of special entities that appear in the new caption, which can be specified instead of *parse_mode*"""
-    show_caption_above_media: Optional[Union[bool, Default]] = Default("show_caption_above_media")
+    show_caption_above_media: DefaultShowCaptionAboveMedia = None
     """Pass :code:`True`, if the caption must be shown above the message media. Ignored if a new caption isn't specified."""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends the message `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[Union[bool, Default]] = Default("protect_content")
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the sent message from forwarding and saving"""
     reply_parameters: Optional[ReplyParameters] = None
     """Description of the message to reply to"""
@@ -53,7 +59,7 @@ class CopyMessage(TelegramMethod[MessageId]):
         Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
     ] = None
     """Additional interface options. A JSON-serialized object for an `inline keyboard <https://core.telegram.org/bots/features#inline-keyboards>`_, `custom reply keyboard <https://core.telegram.org/bots/features#keyboards>`_, instructions to remove a reply keyboard or to force a reply from the user"""
-    allow_sending_without_reply: Optional[bool] = Field(
+    allow_sending_without_reply: DefaultAllowSendingWithoutReply = Field(
         None, json_schema_extra={"deprecated": True}
     )
     """Pass :code:`True` if the message should be sent even if the specified replied-to message is not found
@@ -78,18 +84,16 @@ class CopyMessage(TelegramMethod[MessageId]):
             message_id: int,
             message_thread_id: Optional[int] = None,
             caption: Optional[str] = None,
-            parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            parse_mode: DefaultParseMode = None,
             caption_entities: Optional[List[MessageEntity]] = None,
-            show_caption_above_media: Optional[Union[bool, Default]] = Default(
-                "show_caption_above_media"
-            ),
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+            show_caption_above_media: DefaultShowCaptionAboveMedia = None,
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             reply_parameters: Optional[ReplyParameters] = None,
             reply_markup: Optional[
                 Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
             ] = None,
-            allow_sending_without_reply: Optional[bool] = None,
+            allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
             reply_to_message_id: Optional[int] = None,
             **__pydantic_kwargs: Any,
         ) -> None:

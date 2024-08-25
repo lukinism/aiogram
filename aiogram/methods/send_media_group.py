@@ -4,17 +4,17 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultProtectContent,
+)
 from ..types import (
-    ForceReply,
-    InlineKeyboardMarkup,
     InputMediaAudio,
     InputMediaDocument,
     InputMediaPhoto,
     InputMediaVideo,
     Message,
-    ReplyKeyboardMarkup,
-    ReplyKeyboardRemove,
     ReplyParameters,
 )
 from .base import TelegramMethod
@@ -38,15 +38,15 @@ class SendMediaGroup(TelegramMethod[List[Message]]):
     """Unique identifier of the business connection on behalf of which the message will be sent"""
     message_thread_id: Optional[int] = None
     """Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends messages `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[Union[bool, Default]] = Default("protect_content")
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the sent messages from forwarding and saving"""
     message_effect_id: Optional[str] = None
     """Unique identifier of the message effect to be added to the message; for private chats only"""
     reply_parameters: Optional[ReplyParameters] = None
     """Description of the message to reply to"""
-    allow_sending_without_reply: Optional[bool] = Field(
+    allow_sending_without_reply: DefaultAllowSendingWithoutReply = Field(
         None, json_schema_extra={"deprecated": True}
     )
     """Pass :code:`True` if the message should be sent even if the specified replied-to message is not found
@@ -72,11 +72,11 @@ class SendMediaGroup(TelegramMethod[List[Message]]):
             ],
             business_connection_id: Optional[str] = None,
             message_thread_id: Optional[int] = None,
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             message_effect_id: Optional[str] = None,
             reply_parameters: Optional[ReplyParameters] = None,
-            allow_sending_without_reply: Optional[bool] = None,
+            allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
             reply_to_message_id: Optional[int] = None,
             **__pydantic_kwargs: Any,
         ) -> None:

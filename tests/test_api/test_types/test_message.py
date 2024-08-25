@@ -931,7 +931,7 @@ class TestMessage:
         self,
         message: Message,
         expected_method: Optional[Type[TelegramMethod]],
-        custom_parse_mode: Optional[str],
+        custom_parse_mode: Optional[ParseMode],
     ):
         method = message.send_copy(
             chat_id=42,

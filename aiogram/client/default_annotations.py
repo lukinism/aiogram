@@ -18,9 +18,8 @@ DefaultProtectContent = Annotated[Optional[bool], "default", "protect_content"]
 DefaultAllowSendingWithoutReply = Annotated[
     Optional[bool], "default", "allow_sending_without_reply"
 ]
-DefaultLinkPreviewOptions = Annotated[
-    Optional[_LinkPreviewOptions], "default", "link_preview"
-]
+DefaultLinkPreviewOptions = Annotated[Optional[_LinkPreviewOptions], "default", "link_preview"]
+DefaultShowCaptionAboveMedia = Annotated[Optional[bool], "default", "show_caption_above_media"]
 
 
 def is_default_prop(info: FieldInfo) -> bool:

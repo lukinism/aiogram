@@ -4,7 +4,11 @@ from typing import TYPE_CHECKING, Any, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultProtectContent,
+)
 from ..types import (
     ForceReply,
     InlineKeyboardMarkup,
@@ -44,9 +48,9 @@ class SendLocation(TelegramMethod[Message]):
     """For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified."""
     proximity_alert_radius: Optional[int] = None
     """For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified."""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends the message `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[Union[bool, Default]] = Default("protect_content")
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the sent message from forwarding and saving"""
     message_effect_id: Optional[str] = None
     """Unique identifier of the message effect to be added to the message; for private chats only"""
@@ -56,7 +60,7 @@ class SendLocation(TelegramMethod[Message]):
         Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
     ] = None
     """Additional interface options. A JSON-serialized object for an `inline keyboard <https://core.telegram.org/bots/features#inline-keyboards>`_, `custom reply keyboard <https://core.telegram.org/bots/features#keyboards>`_, instructions to remove a reply keyboard or to force a reply from the user"""
-    allow_sending_without_reply: Optional[bool] = Field(
+    allow_sending_without_reply: DefaultAllowSendingWithoutReply = Field(
         None, json_schema_extra={"deprecated": True}
     )
     """Pass :code:`True` if the message should be sent even if the specified replied-to message is not found
@@ -85,14 +89,14 @@ class SendLocation(TelegramMethod[Message]):
             live_period: Optional[int] = None,
             heading: Optional[int] = None,
             proximity_alert_radius: Optional[int] = None,
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             message_effect_id: Optional[str] = None,
             reply_parameters: Optional[ReplyParameters] = None,
             reply_markup: Optional[
                 Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
             ] = None,
-            allow_sending_without_reply: Optional[bool] = None,
+            allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
             reply_to_message_id: Optional[int] = None,
             **__pydantic_kwargs: Any,
         ) -> None:

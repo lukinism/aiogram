@@ -5,7 +5,12 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultParseMode,
+    DefaultProtectContent,
+)
 from ..types import (
     ForceReply,
     InlineKeyboardMarkup,
@@ -39,7 +44,7 @@ class SendPoll(TelegramMethod[Message]):
     """Unique identifier of the business connection on behalf of which the message will be sent"""
     message_thread_id: Optional[int] = None
     """Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"""
-    question_parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    question_parse_mode: DefaultParseMode = None
     """Mode for parsing entities in the question. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details. Currently, only custom emoji entities are allowed"""
     question_entities: Optional[List[MessageEntity]] = None
     """A JSON-serialized list of special entities that appear in the poll question. It can be specified instead of *question_parse_mode*"""
@@ -53,7 +58,7 @@ class SendPoll(TelegramMethod[Message]):
     """0-based identifier of the correct answer option, required for polls in quiz mode"""
     explanation: Optional[str] = None
     """Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters with at most 2 line feeds after entities parsing"""
-    explanation_parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    explanation_parse_mode: DefaultParseMode = None
     """Mode for parsing entities in the explanation. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     explanation_entities: Optional[List[MessageEntity]] = None
     """A JSON-serialized list of special entities that appear in the poll explanation. It can be specified instead of *explanation_parse_mode*"""
@@ -63,9 +68,9 @@ class SendPoll(TelegramMethod[Message]):
     """Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with *open_period*."""
     is_closed: Optional[bool] = None
     """Pass :code:`True` if the poll needs to be immediately closed. This can be useful for poll preview."""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends the message `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[Union[bool, Default]] = Default("protect_content")
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the sent message from forwarding and saving"""
     message_effect_id: Optional[str] = None
     """Unique identifier of the message effect to be added to the message; for private chats only"""
@@ -75,7 +80,7 @@ class SendPoll(TelegramMethod[Message]):
         Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
     ] = None
     """Additional interface options. A JSON-serialized object for an `inline keyboard <https://core.telegram.org/bots/features#inline-keyboards>`_, `custom reply keyboard <https://core.telegram.org/bots/features#keyboards>`_, instructions to remove a reply keyboard or to force a reply from the user"""
-    allow_sending_without_reply: Optional[bool] = Field(
+    allow_sending_without_reply: DefaultAllowSendingWithoutReply = Field(
         None, json_schema_extra={"deprecated": True}
     )
     """Pass :code:`True` if the message should be sent even if the specified replied-to message is not found
@@ -100,26 +105,26 @@ class SendPoll(TelegramMethod[Message]):
             options: List[Union[InputPollOption, str]],
             business_connection_id: Optional[str] = None,
             message_thread_id: Optional[int] = None,
-            question_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            question_parse_mode: DefaultParseMode = None,
             question_entities: Optional[List[MessageEntity]] = None,
             is_anonymous: Optional[bool] = None,
             type: Optional[str] = None,
             allows_multiple_answers: Optional[bool] = None,
             correct_option_id: Optional[int] = None,
             explanation: Optional[str] = None,
-            explanation_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            explanation_parse_mode: DefaultParseMode = None,
             explanation_entities: Optional[List[MessageEntity]] = None,
             open_period: Optional[int] = None,
             close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
             is_closed: Optional[bool] = None,
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             message_effect_id: Optional[str] = None,
             reply_parameters: Optional[ReplyParameters] = None,
             reply_markup: Optional[
                 Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
             ] = None,
-            allow_sending_without_reply: Optional[bool] = None,
+            allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
             reply_to_message_id: Optional[int] = None,
             **__pydantic_kwargs: Any,
         ) -> None:

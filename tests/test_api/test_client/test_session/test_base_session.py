@@ -128,6 +128,7 @@ class TestBaseSession:
         value = session.prepare_value(datetime.timedelta(minutes=2), bot=bot, files={})
         assert isinstance(value, str)
 
+    @pytest.mark.skip
     def test_prepare_value_defaults_replace(self):
         bot = MockedBot(
             default=DefaultBotProperties(

@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Literal, Optional, Union
 
-from ..client.default import Default
+from ..client.default_annotations import DefaultParseMode, DefaultShowCaptionAboveMedia
 from ..enums import InlineQueryResultType
-from .base import UNSET_PARSE_MODE
 from .inline_query_result import InlineQueryResult
 
 if TYPE_CHECKING:
@@ -44,11 +43,11 @@ class InlineQueryResultGif(InlineQueryResult):
     """*Optional*. Title for the result"""
     caption: Optional[str] = None
     """*Optional*. Caption of the GIF file to be sent, 0-1024 characters after entities parsing"""
-    parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    parse_mode: DefaultParseMode = None
     """*Optional*. Mode for parsing entities in the caption. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     caption_entities: Optional[List[MessageEntity]] = None
     """*Optional*. List of special entities that appear in the caption, which can be specified instead of *parse_mode*"""
-    show_caption_above_media: Optional[Union[bool, Default]] = Default("show_caption_above_media")
+    show_caption_above_media: DefaultShowCaptionAboveMedia = None
     """*Optional*. Pass :code:`True`, if the caption must be shown above the message media"""
     reply_markup: Optional[InlineKeyboardMarkup] = None
     """*Optional*. `Inline keyboard <https://core.telegram.org/bots/features#inline-keyboards>`_ attached to the message"""
@@ -80,11 +79,9 @@ class InlineQueryResultGif(InlineQueryResult):
             thumbnail_mime_type: Optional[str] = None,
             title: Optional[str] = None,
             caption: Optional[str] = None,
-            parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            parse_mode: DefaultParseMode = None,
             caption_entities: Optional[List[MessageEntity]] = None,
-            show_caption_above_media: Optional[Union[bool, Default]] = Default(
-                "show_caption_above_media"
-            ),
+            show_caption_above_media: DefaultShowCaptionAboveMedia = None,
             reply_markup: Optional[InlineKeyboardMarkup] = None,
             input_message_content: Optional[
                 Union[

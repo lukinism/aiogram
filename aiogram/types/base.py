@@ -4,7 +4,6 @@ from unittest.mock import sentinel
 from pydantic import BaseModel, ConfigDict, model_validator
 
 from aiogram.client.context_controller import BotContextController
-from aiogram.client.default import Default
 
 
 class TelegramObject(BotContextController, BaseModel):
@@ -46,6 +45,6 @@ UNSET_TYPE: Any = type(UNSET)
 
 # Unused constants are needed only for backward compatibility with external
 # libraries that a working with framework internals
-UNSET_PARSE_MODE: Any = Default("parse_mode")
-UNSET_DISABLE_WEB_PAGE_PREVIEW: Any = Default("link_preview_is_disabled")
-UNSET_PROTECT_CONTENT: Any = Default("protect_content")
+UNSET_PARSE_MODE: Any = None
+UNSET_DISABLE_WEB_PAGE_PREVIEW: Any = None
+UNSET_PROTECT_CONTENT: Any = None

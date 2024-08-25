@@ -10,12 +10,18 @@ from aiogram.utils.text_decorations import (
     html_decoration,
     markdown_decoration,
 )
-
-from ..client.default import Default
-from ..enums import ContentType
 from .custom import DateTime
 from .maybe_inaccessible_message import MaybeInaccessibleMessage
 from .reply_parameters import ReplyParameters
+from ..client.default_annotations import (
+    DefaultAllowSendingWithoutReply,
+    DefaultDisableNotification,
+    DefaultLinkPreviewOptions,
+    DefaultParseMode,
+    DefaultProtectContent,
+    DefaultShowCaptionAboveMedia,
+)
+from ..enums import ContentType, ParseMode
 
 if TYPE_CHECKING:
     from ..methods import (
@@ -85,7 +91,6 @@ if TYPE_CHECKING:
     from .input_poll_option import InputPollOption
     from .invoice import Invoice
     from .labeled_price import LabeledPrice
-    from .link_preview_options import LinkPreviewOptions
     from .location import Location
     from .message_auto_delete_timer_changed import MessageAutoDeleteTimerChanged
     from .message_entity import MessageEntity
@@ -180,7 +185,7 @@ class Message(MaybeInaccessibleMessage):
     """*Optional*. For text messages, the actual UTF-8 text of the message"""
     entities: Optional[List[MessageEntity]] = None
     """*Optional*. For text messages, special entities like usernames, URLs, bot commands, etc. that appear in the text"""
-    link_preview_options: Optional[LinkPreviewOptions] = None
+    link_preview_options: DefaultLinkPreviewOptions = None
     """*Optional*. Options used for link preview generation for the message, if it is a text message and link preview options were changed"""
     effect_id: Optional[str] = None
     """*Optional*. Unique identifier of the message effect added to the message"""
@@ -208,7 +213,7 @@ class Message(MaybeInaccessibleMessage):
     """*Optional*. Caption for the animation, audio, document, paid media, photo, video or voice"""
     caption_entities: Optional[List[MessageEntity]] = None
     """*Optional*. For messages with a caption, special entities like usernames, URLs, bot commands, etc. that appear in the caption"""
-    show_caption_above_media: Optional[bool] = None
+    show_caption_above_media: DefaultShowCaptionAboveMedia = None
     """*Optional*. True, if the caption must be shown above the message media"""
     has_media_spoiler: Optional[bool] = None
     """*Optional*. :code:`True`, if the message media is covered by a spoiler animation"""
@@ -376,7 +381,7 @@ class Message(MaybeInaccessibleMessage):
             author_signature: Optional[str] = None,
             text: Optional[str] = None,
             entities: Optional[List[MessageEntity]] = None,
-            link_preview_options: Optional[LinkPreviewOptions] = None,
+            link_preview_options: DefaultLinkPreviewOptions = None,
             effect_id: Optional[str] = None,
             animation: Optional[Animation] = None,
             audio: Optional[Audio] = None,
@@ -390,7 +395,7 @@ class Message(MaybeInaccessibleMessage):
             voice: Optional[Voice] = None,
             caption: Optional[str] = None,
             caption_entities: Optional[List[MessageEntity]] = None,
-            show_caption_above_media: Optional[bool] = None,
+            show_caption_above_media: DefaultShowCaptionAboveMedia = None,
             has_media_spoiler: Optional[bool] = None,
             contact: Optional[Contact] = None,
             dice: Optional[Dice] = None,
@@ -678,11 +683,9 @@ class Message(MaybeInaccessibleMessage):
 
     def as_reply_parameters(
         self,
-        allow_sending_without_reply: Optional[Union[bool, Default]] = Default(
-            "allow_sending_without_reply"
-        ),
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         quote: Optional[str] = None,
-        quote_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        quote_parse_mode: DefaultParseMode = None,
         quote_entities: Optional[List[MessageEntity]] = None,
         quote_position: Optional[int] = None,
     ) -> ReplyParameters:
@@ -704,19 +707,17 @@ class Message(MaybeInaccessibleMessage):
         height: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendAnimation:
         """
@@ -789,20 +790,18 @@ class Message(MaybeInaccessibleMessage):
         height: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendAnimation:
@@ -874,19 +873,19 @@ class Message(MaybeInaccessibleMessage):
         self,
         audio: Union[InputFile, str],
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         duration: Optional[int] = None,
         performer: Optional[str] = None,
         title: Optional[str] = None,
         thumbnail: Optional[InputFile] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendAudio:
         """
@@ -952,20 +951,20 @@ class Message(MaybeInaccessibleMessage):
         self,
         audio: Union[InputFile, str],
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         duration: Optional[int] = None,
         performer: Optional[str] = None,
         title: Optional[str] = None,
         thumbnail: Optional[InputFile] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendAudio:
@@ -1036,13 +1035,13 @@ class Message(MaybeInaccessibleMessage):
         first_name: str,
         last_name: Optional[str] = None,
         vcard: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendContact:
         """
@@ -1101,14 +1100,14 @@ class Message(MaybeInaccessibleMessage):
         first_name: str,
         last_name: Optional[str] = None,
         vcard: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendContact:
@@ -1169,16 +1168,16 @@ class Message(MaybeInaccessibleMessage):
         document: Union[InputFile, str],
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         disable_content_type_detection: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendDocument:
         """
@@ -1240,17 +1239,17 @@ class Message(MaybeInaccessibleMessage):
         document: Union[InputFile, str],
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         disable_content_type_detection: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendDocument:
@@ -1313,11 +1312,11 @@ class Message(MaybeInaccessibleMessage):
     def reply_game(
         self,
         game_short_name: str,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendGame:
         """
@@ -1367,12 +1366,12 @@ class Message(MaybeInaccessibleMessage):
     def answer_game(
         self,
         game_short_name: str,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendGame:
@@ -1445,11 +1444,11 @@ class Message(MaybeInaccessibleMessage):
         send_phone_number_to_provider: Optional[bool] = None,
         send_email_to_provider: Optional[bool] = None,
         is_flexible: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendInvoice:
         """
@@ -1559,12 +1558,12 @@ class Message(MaybeInaccessibleMessage):
         send_phone_number_to_provider: Optional[bool] = None,
         send_email_to_provider: Optional[bool] = None,
         is_flexible: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendInvoice:
@@ -1662,13 +1661,13 @@ class Message(MaybeInaccessibleMessage):
         live_period: Optional[int] = None,
         heading: Optional[int] = None,
         proximity_alert_radius: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendLocation:
         """
@@ -1733,14 +1732,14 @@ class Message(MaybeInaccessibleMessage):
         live_period: Optional[int] = None,
         heading: Optional[int] = None,
         proximity_alert_radius: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendLocation:
@@ -1803,10 +1802,10 @@ class Message(MaybeInaccessibleMessage):
     def reply_media_group(
         self,
         media: List[Union[InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo]],
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendMediaGroup:
         """
@@ -1854,11 +1853,11 @@ class Message(MaybeInaccessibleMessage):
     def answer_media_group(
         self,
         media: List[Union[InputMediaAudio, InputMediaDocument, InputMediaPhoto, InputMediaVideo]],
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendMediaGroup:
@@ -1909,21 +1908,17 @@ class Message(MaybeInaccessibleMessage):
     def reply(
         self,
         text: str,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         entities: Optional[List[MessageEntity]] = None,
-        link_preview_options: Optional[Union[LinkPreviewOptions, Default]] = Default(
-            "link_preview"
-        ),
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        link_preview_options: DefaultLinkPreviewOptions = None,
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
-        disable_web_page_preview: Optional[Union[bool, Default]] = Default(
-            "link_preview_is_disabled"
-        ),
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
+        disable_web_page_preview: Optional[bool] = None,
         **kwargs: Any,
     ) -> SendMessage:
         """
@@ -1981,22 +1976,18 @@ class Message(MaybeInaccessibleMessage):
     def answer(
         self,
         text: str,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         entities: Optional[List[MessageEntity]] = None,
-        link_preview_options: Optional[Union[LinkPreviewOptions, Default]] = Default(
-            "link_preview"
-        ),
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        link_preview_options: DefaultLinkPreviewOptions = None,
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
-        disable_web_page_preview: Optional[Union[bool, Default]] = Default(
-            "link_preview_is_disabled"
-        ),
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
+        disable_web_page_preview: Optional[bool] = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendMessage:
@@ -2058,19 +2049,17 @@ class Message(MaybeInaccessibleMessage):
         self,
         photo: Union[InputFile, str],
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendPhoto:
         """
@@ -2131,20 +2120,18 @@ class Message(MaybeInaccessibleMessage):
         self,
         photo: Union[InputFile, str],
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendPhoto:
@@ -2208,25 +2195,25 @@ class Message(MaybeInaccessibleMessage):
         self,
         question: str,
         options: List[Union[InputPollOption, str]],
-        question_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        question_parse_mode: DefaultParseMode = None,
         question_entities: Optional[List[MessageEntity]] = None,
         is_anonymous: Optional[bool] = None,
         type: Optional[str] = None,
         allows_multiple_answers: Optional[bool] = None,
         correct_option_id: Optional[int] = None,
         explanation: Optional[str] = None,
-        explanation_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
         close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
         is_closed: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendPoll:
         """
@@ -2303,26 +2290,26 @@ class Message(MaybeInaccessibleMessage):
         self,
         question: str,
         options: List[Union[InputPollOption, str]],
-        question_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        question_parse_mode: DefaultParseMode = None,
         question_entities: Optional[List[MessageEntity]] = None,
         is_anonymous: Optional[bool] = None,
         type: Optional[str] = None,
         allows_multiple_answers: Optional[bool] = None,
         correct_option_id: Optional[int] = None,
         explanation: Optional[str] = None,
-        explanation_parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        explanation_parse_mode: DefaultParseMode = None,
         explanation_entities: Optional[List[MessageEntity]] = None,
         open_period: Optional[int] = None,
         close_date: Optional[Union[datetime.datetime, datetime.timedelta, int]] = None,
         is_closed: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendPoll:
@@ -2401,13 +2388,13 @@ class Message(MaybeInaccessibleMessage):
     def reply_dice(
         self,
         emoji: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendDice:
         """
@@ -2457,14 +2444,14 @@ class Message(MaybeInaccessibleMessage):
     def answer_dice(
         self,
         emoji: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendDice:
@@ -2518,13 +2505,13 @@ class Message(MaybeInaccessibleMessage):
         self,
         sticker: Union[InputFile, str],
         emoji: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendSticker:
         """
@@ -2577,14 +2564,14 @@ class Message(MaybeInaccessibleMessage):
         self,
         sticker: Union[InputFile, str],
         emoji: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendSticker:
@@ -2646,13 +2633,13 @@ class Message(MaybeInaccessibleMessage):
         foursquare_type: Optional[str] = None,
         google_place_id: Optional[str] = None,
         google_place_type: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendVenue:
         """
@@ -2723,14 +2710,14 @@ class Message(MaybeInaccessibleMessage):
         foursquare_type: Optional[str] = None,
         google_place_id: Optional[str] = None,
         google_place_type: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVenue:
@@ -2802,20 +2789,18 @@ class Message(MaybeInaccessibleMessage):
         height: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
         supports_streaming: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendVideo:
         """
@@ -2890,21 +2875,19 @@ class Message(MaybeInaccessibleMessage):
         height: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         has_spoiler: Optional[bool] = None,
         supports_streaming: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVideo:
@@ -2980,13 +2963,13 @@ class Message(MaybeInaccessibleMessage):
         duration: Optional[int] = None,
         length: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendVideoNote:
         """
@@ -3045,14 +3028,14 @@ class Message(MaybeInaccessibleMessage):
         duration: Optional[int] = None,
         length: Optional[int] = None,
         thumbnail: Optional[InputFile] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVideoNote:
@@ -3112,16 +3095,16 @@ class Message(MaybeInaccessibleMessage):
         self,
         voice: Union[InputFile, str],
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         duration: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         **kwargs: Any,
     ) -> SendVoice:
         """
@@ -3180,17 +3163,17 @@ class Message(MaybeInaccessibleMessage):
         self,
         voice: Union[InputFile, str],
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
         duration: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         message_effect_id: Optional[str] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> SendVoice:
@@ -3251,14 +3234,14 @@ class Message(MaybeInaccessibleMessage):
     def send_copy(  # noqa: C901
         self: Message,
         chat_id: Union[str, int],
-        disable_notification: Optional[bool] = None,
+        disable_notification: DefaultDisableNotification = None,
         reply_to_message_id: Optional[int] = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, None] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         message_thread_id: Optional[int] = None,
         business_connection_id: Optional[str] = None,
-        parse_mode: Optional[str] = None,
+        parse_mode: Optional[ParseMode] = None,
         message_effect_id: Optional[str] = None,
     ) -> Union[
         ForwardMessage,
@@ -3450,18 +3433,16 @@ class Message(MaybeInaccessibleMessage):
         chat_id: Union[int, str],
         message_thread_id: Optional[int] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,
-        allow_sending_without_reply: Optional[bool] = None,
+        allow_sending_without_reply: DefaultAllowSendingWithoutReply = None,
         reply_to_message_id: Optional[int] = None,
         **kwargs: Any,
     ) -> CopyMessage:
@@ -3522,15 +3503,11 @@ class Message(MaybeInaccessibleMessage):
         text: str,
         business_connection_id: Optional[str] = None,
         inline_message_id: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         entities: Optional[List[MessageEntity]] = None,
-        link_preview_options: Optional[Union[LinkPreviewOptions, Default]] = Default(
-            "link_preview"
-        ),
+        link_preview_options: DefaultLinkPreviewOptions = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
-        disable_web_page_preview: Optional[Union[bool, Default]] = Default(
-            "link_preview_is_disabled"
-        ),
+        disable_web_page_preview: Optional[bool] = None,
         **kwargs: Any,
     ) -> EditMessageText:
         """
@@ -3581,8 +3558,8 @@ class Message(MaybeInaccessibleMessage):
         self,
         chat_id: Union[int, str],
         message_thread_id: Optional[int] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[Union[bool, Default]] = Default("protect_content"),
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         **kwargs: Any,
     ) -> ForwardMessage:
         """
@@ -3857,11 +3834,9 @@ class Message(MaybeInaccessibleMessage):
         business_connection_id: Optional[str] = None,
         inline_message_id: Optional[str] = None,
         caption: Optional[str] = None,
-        parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+        parse_mode: DefaultParseMode = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[Union[bool, Default]] = Default(
-            "show_caption_above_media"
-        ),
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
         reply_markup: Optional[InlineKeyboardMarkup] = None,
         **kwargs: Any,
     ) -> EditMessageCaption:
@@ -3960,7 +3935,7 @@ class Message(MaybeInaccessibleMessage):
     def pin(
         self,
         business_connection_id: Optional[str] = None,
-        disable_notification: Optional[bool] = None,
+        disable_notification: DefaultDisableNotification = None,
         **kwargs: Any,
     ) -> PinChatMessage:
         """
@@ -4104,11 +4079,11 @@ class Message(MaybeInaccessibleMessage):
         star_count: int,
         media: List[Union[InputPaidMediaPhoto, InputPaidMediaVideo]],
         caption: Optional[str] = None,
-        parse_mode: Optional[str] = None,
+        parse_mode: Optional[ParseMode] = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[bool] = None,
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         reply_parameters: Optional[ReplyParameters] = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
@@ -4170,11 +4145,11 @@ class Message(MaybeInaccessibleMessage):
         star_count: int,
         media: List[Union[InputPaidMediaPhoto, InputPaidMediaVideo]],
         caption: Optional[str] = None,
-        parse_mode: Optional[str] = None,
+        parse_mode: Optional[ParseMode] = None,
         caption_entities: Optional[List[MessageEntity]] = None,
-        show_caption_above_media: Optional[bool] = None,
-        disable_notification: Optional[bool] = None,
-        protect_content: Optional[bool] = None,
+        show_caption_above_media: DefaultShowCaptionAboveMedia = None,
+        disable_notification: DefaultDisableNotification = None,
+        protect_content: DefaultProtectContent = None,
         reply_markup: Optional[
             Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]
         ] = None,

@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-import sys
-from dataclasses import dataclass
-from typing import TYPE_CHECKING, Any, Dict, Optional
+import warnings
+from typing import Any, Optional
 
-if TYPE_CHECKING:
-    from aiogram.types import LinkPreviewOptions
+from pydantic import BaseModel
+
+from aiogram.enums import ParseMode
+
+from aiogram.types import LinkPreviewOptions
 
 
 class Default:
@@ -26,19 +28,12 @@ class Default:
         return f"<{self}>"
 
 
-_dataclass_properties: Dict[str, Any] = {}
-if sys.version_info >= (3, 10):
-    # Speedup attribute access for dataclasses in Python 3.10+
-    _dataclass_properties.update({"slots": True, "kw_only": True})
-
-
-@dataclass(**_dataclass_properties)
-class DefaultBotProperties:
+class DefaultBotProperties(BaseModel):
     """
     Default bot properties.
     """
 
-    parse_mode: Optional[str] = None
+    parse_mode: Optional[ParseMode] = None
     """Default parse mode for messages."""
     disable_notification: Optional[bool] = None
     """Sends the message silently. Users will receive a notification with no sound."""
@@ -48,36 +43,57 @@ class DefaultBotProperties:
     """Allows to send messages without reply."""
     link_preview: Optional[LinkPreviewOptions] = None
     """Link preview settings."""
-    link_preview_is_disabled: Optional[bool] = None
-    """Disables link preview."""
-    link_preview_prefer_small_media: Optional[bool] = None
-    """Prefer small media in link preview."""
-    link_preview_prefer_large_media: Optional[bool] = None
-    """Prefer large media in link preview."""
-    link_preview_show_above_text: Optional[bool] = None
-    """Show link preview above text."""
     show_caption_above_media: Optional[bool] = None
     """Show caption above media."""
 
-    def __post_init__(self) -> None:
-        has_any_link_preview_option = any(
-            (
-                self.link_preview_is_disabled,
-                self.link_preview_prefer_small_media,
-                self.link_preview_prefer_large_media,
-                self.link_preview_show_above_text,
-            )
+    @property
+    def is_empty(self) -> bool:
+        return all(
+            getattr(self, field_name) == field_info.default
+            for field_name, field_info in self.model_fields.items()
         )
 
-        if has_any_link_preview_option and self.link_preview is None:
-            from ..types import LinkPreviewOptions
-
-            self.link_preview = LinkPreviewOptions(
-                is_disabled=self.link_preview_is_disabled,
-                prefer_small_media=self.link_preview_prefer_small_media,
-                prefer_large_media=self.link_preview_prefer_large_media,
-                show_above_text=self.link_preview_show_above_text,
+    def __init__(
+        self,
+        *,
+        parse_mode: Optional[ParseMode] = None,
+        disable_notification: Optional[bool] = None,
+        protect_content: Optional[bool] = None,
+        allow_sending_without_reply: Optional[bool] = None,
+        link_preview: Optional[LinkPreviewOptions] = None,
+        link_preview_is_disabled: Optional[bool] = None,
+        link_preview_prefer_small_media: Optional[bool] = None,
+        link_preview_prefer_large_media: Optional[bool] = None,
+        link_preview_show_above_text: Optional[bool] = None,
+        show_caption_above_media: Optional[bool] = None,
+    ):
+        has_any_link_preview_option = any(
+            (
+                link_preview_is_disabled,
+                link_preview_prefer_small_media,
+                link_preview_prefer_large_media,
+                link_preview_show_above_text,
             )
+        )
+        if has_any_link_preview_option:
+            warnings.warn(
+                "Passing `link_preview_is_disabled`, `link_preview_prefer_small_media`, "
+                "`link_preview_prefer_large_media`, and `link_preview_show_above_text` "
+                "to DefaultBotProperties initializer is deprecated. "
+                "These arguments will be removed in 3.14.0 version\n"
+                "Use `link_preview` instead.",
+                category=DeprecationWarning,
+                stacklevel=2,
+            )
+
+        super().__init__(
+            parse_mode=parse_mode,
+            disable_notification=disable_notification,
+            protect_content=protect_content,
+            allow_sending_without_reply=allow_sending_without_reply,
+            link_preview=link_preview,
+            show_caption_above_media=show_caption_above_media,
+        )
 
     def __getitem__(self, item: str) -> Any:
         return getattr(self, item, None)

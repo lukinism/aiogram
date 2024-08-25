@@ -1,5 +1,9 @@
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
+from ..client.default_annotations import (
+    DefaultDisableNotification,
+    DefaultProtectContent,
+)
 from ..types import MessageId
 from .base import TelegramMethod
 
@@ -22,9 +26,9 @@ class ForwardMessages(TelegramMethod[List[MessageId]]):
     """A JSON-serialized list of 1-100 identifiers of messages in the chat *from_chat_id* to forward. The identifiers must be specified in a strictly increasing order."""
     message_thread_id: Optional[int] = None
     """Unique identifier for the target message thread (topic) of the forum; for forum supergroups only"""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends the messages `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[bool] = None
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the forwarded messages from forwarding and saving"""
 
     if TYPE_CHECKING:
@@ -38,8 +42,8 @@ class ForwardMessages(TelegramMethod[List[MessageId]]):
             from_chat_id: Union[int, str],
             message_ids: List[int],
             message_thread_id: Optional[int] = None,
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[bool] = None,
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             **__pydantic_kwargs: Any,
         ) -> None:
             # DO NOT EDIT MANUALLY!!!

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Literal, Optional, Union
 
-from ..client.default import Default
+from ..client.default_annotations import DefaultParseMode
 from ..enums import InlineQueryResultType
 from .inline_query_result import InlineQueryResult
 
@@ -33,7 +33,7 @@ class InlineQueryResultVoice(InlineQueryResult):
     """Recording title"""
     caption: Optional[str] = None
     """*Optional*. Caption, 0-1024 characters after entities parsing"""
-    parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    parse_mode: DefaultParseMode = None
     """*Optional*. Mode for parsing entities in the voice message caption. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     caption_entities: Optional[List[MessageEntity]] = None
     """*Optional*. List of special entities that appear in the caption, which can be specified instead of *parse_mode*"""
@@ -64,7 +64,7 @@ class InlineQueryResultVoice(InlineQueryResult):
             voice_url: str,
             title: str,
             caption: Optional[str] = None,
-            parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            parse_mode: DefaultParseMode = None,
             caption_entities: Optional[List[MessageEntity]] = None,
             voice_duration: Optional[int] = None,
             reply_markup: Optional[InlineKeyboardMarkup] = None,

@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Optional, Union
 
+from ..client.default_annotations import (
+    DefaultDisableNotification,
+    DefaultProtectContent,
+    DefaultShowCaptionAboveMedia,
+)
+from ..enums import ParseMode
 from ..types import (
     ForceReply,
     InlineKeyboardMarkup,
@@ -36,15 +42,15 @@ class SendPaidMedia(TelegramMethod[Message]):
     """Unique identifier of the business connection on behalf of which the message will be sent"""
     caption: Optional[str] = None
     """Media caption, 0-1024 characters after entities parsing"""
-    parse_mode: Optional[str] = None
+    parse_mode: Optional[ParseMode] = None
     """Mode for parsing entities in the media caption. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     caption_entities: Optional[List[MessageEntity]] = None
     """A JSON-serialized list of special entities that appear in the caption, which can be specified instead of *parse_mode*"""
-    show_caption_above_media: Optional[bool] = None
+    show_caption_above_media: DefaultShowCaptionAboveMedia = None
     """Pass :code:`True`, if the caption must be shown above the message media"""
-    disable_notification: Optional[bool] = None
+    disable_notification: DefaultDisableNotification = None
     """Sends the message `silently <https://telegram.org/blog/channels-2-0#silent-messages>`_. Users will receive a notification with no sound."""
-    protect_content: Optional[bool] = None
+    protect_content: DefaultProtectContent = None
     """Protects the contents of the sent message from forwarding and saving"""
     reply_parameters: Optional[ReplyParameters] = None
     """Description of the message to reply to"""
@@ -65,11 +71,11 @@ class SendPaidMedia(TelegramMethod[Message]):
             media: List[Union[InputPaidMediaPhoto, InputPaidMediaVideo]],
             business_connection_id: Optional[str] = None,
             caption: Optional[str] = None,
-            parse_mode: Optional[str] = None,
+            parse_mode: Optional[ParseMode] = None,
             caption_entities: Optional[List[MessageEntity]] = None,
-            show_caption_above_media: Optional[bool] = None,
-            disable_notification: Optional[bool] = None,
-            protect_content: Optional[bool] = None,
+            show_caption_above_media: DefaultShowCaptionAboveMedia = None,
+            disable_notification: DefaultDisableNotification = None,
+            protect_content: DefaultProtectContent = None,
             reply_parameters: Optional[ReplyParameters] = None,
             reply_markup: Optional[
                 Union[InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply]

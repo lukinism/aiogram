@@ -4,15 +4,9 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union
 
 from pydantic import Field
 
-from ..client.default import Default
-from ..types import (
-    UNSET_PARSE_MODE,
-    InlineKeyboardMarkup,
-    LinkPreviewOptions,
-    Message,
-    MessageEntity,
-)
 from .base import TelegramMethod
+from ..client.default_annotations import DefaultLinkPreviewOptions, DefaultParseMode
+from ..types import InlineKeyboardMarkup, Message, MessageEntity
 
 
 class EditMessageText(TelegramMethod[Union[Message, bool]]):
@@ -35,17 +29,15 @@ class EditMessageText(TelegramMethod[Union[Message, bool]]):
     """Required if *inline_message_id* is not specified. Identifier of the message to edit"""
     inline_message_id: Optional[str] = None
     """Required if *chat_id* and *message_id* are not specified. Identifier of the inline message"""
-    parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    parse_mode: DefaultParseMode = None
     """Mode for parsing entities in the message text. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     entities: Optional[List[MessageEntity]] = None
     """A JSON-serialized list of special entities that appear in message text, which can be specified instead of *parse_mode*"""
-    link_preview_options: Optional[Union[LinkPreviewOptions, Default]] = Default("link_preview")
+    link_preview_options: DefaultLinkPreviewOptions = None
     """Link preview generation options for the message"""
     reply_markup: Optional[InlineKeyboardMarkup] = None
     """A JSON-serialized object for an `inline keyboard <https://core.telegram.org/bots/features#inline-keyboards>`_."""
-    disable_web_page_preview: Optional[Union[bool, Default]] = Field(
-        Default("link_preview_is_disabled"), json_schema_extra={"deprecated": True}
-    )
+    disable_web_page_preview: Optional[bool] = Field(None, json_schema_extra={"deprecated": True})
     """Disables link previews for links in this message
 
 .. deprecated:: API:7.0
@@ -63,15 +55,11 @@ class EditMessageText(TelegramMethod[Union[Message, bool]]):
             chat_id: Optional[Union[int, str]] = None,
             message_id: Optional[int] = None,
             inline_message_id: Optional[str] = None,
-            parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            parse_mode: DefaultParseMode = None,
             entities: Optional[List[MessageEntity]] = None,
-            link_preview_options: Optional[Union[LinkPreviewOptions, Default]] = Default(
-                "link_preview"
-            ),
+            link_preview_options: DefaultLinkPreviewOptions = None,
             reply_markup: Optional[InlineKeyboardMarkup] = None,
-            disable_web_page_preview: Optional[Union[bool, Default]] = Default(
-                "link_preview_is_disabled"
-            ),
+            disable_web_page_preview: Optional[bool] = None,
             **__pydantic_kwargs: Any,
         ) -> None:
             # DO NOT EDIT MANUALLY!!!

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, List, Literal, Optional, Union
 
-from ..client.default import Default
+from ..client.default_annotations import DefaultParseMode, DefaultShowCaptionAboveMedia
 from ..enums import InputMediaType
 from .input_media import InputMedia
 
@@ -24,11 +24,11 @@ class InputMediaPhoto(InputMedia):
     """File to send. Pass a file_id to send a file that exists on the Telegram servers (recommended), pass an HTTP URL for Telegram to get a file from the Internet, or pass 'attach://<file_attach_name>' to upload a new one using multipart/form-data under <file_attach_name> name. :ref:`More information on Sending Files » <sending-files>`"""
     caption: Optional[str] = None
     """*Optional*. Caption of the photo to be sent, 0-1024 characters after entities parsing"""
-    parse_mode: Optional[Union[str, Default]] = Default("parse_mode")
+    parse_mode: DefaultParseMode = None
     """*Optional*. Mode for parsing entities in the photo caption. See `formatting options <https://core.telegram.org/bots/api#formatting-options>`_ for more details."""
     caption_entities: Optional[List[MessageEntity]] = None
     """*Optional*. List of special entities that appear in the caption, which can be specified instead of *parse_mode*"""
-    show_caption_above_media: Optional[Union[bool, Default]] = Default("show_caption_above_media")
+    show_caption_above_media: DefaultShowCaptionAboveMedia = None
     """*Optional*. Pass :code:`True`, if the caption must be shown above the message media"""
     has_spoiler: Optional[bool] = None
     """*Optional*. Pass :code:`True` if the photo needs to be covered with a spoiler animation"""
@@ -43,11 +43,9 @@ class InputMediaPhoto(InputMedia):
             type: Literal[InputMediaType.PHOTO] = InputMediaType.PHOTO,
             media: Union[str, InputFile],
             caption: Optional[str] = None,
-            parse_mode: Optional[Union[str, Default]] = Default("parse_mode"),
+            parse_mode: DefaultParseMode = None,
             caption_entities: Optional[List[MessageEntity]] = None,
-            show_caption_above_media: Optional[Union[bool, Default]] = Default(
-                "show_caption_above_media"
-            ),
+            show_caption_above_media: DefaultShowCaptionAboveMedia = None,
             has_spoiler: Optional[bool] = None,
             **__pydantic_kwargs: Any,
         ) -> None:
