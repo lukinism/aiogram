@@ -85,6 +85,15 @@ class DefaultBotProperties(BaseModel):
                 stacklevel=2,
             )
 
+        link_preview = link_preview or LinkPreviewOptions()
+        link_preview = LinkPreviewOptions(
+            is_disabled=link_preview.is_disabled or link_preview_is_disabled,
+            url=link_preview.url,
+            prefer_small_media=link_preview.prefer_small_media or link_preview_prefer_small_media,
+            prefer_large_media=link_preview.prefer_large_media or link_preview_prefer_large_media,
+            show_above_text=link_preview.show_above_text or link_preview_show_above_text,
+        )
+
         super().__init__(
             parse_mode=parse_mode,
             disable_notification=disable_notification,
