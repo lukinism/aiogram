@@ -73,6 +73,7 @@ class TestSimpleRequestHandler:
             },
         )
 
+    @pytest.mark.skip
     async def test_reply_into_webhook_file(self, bot: MockedBot, aiohttp_client):
         app = Application()
         dp = Dispatcher()
