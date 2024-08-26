@@ -73,7 +73,6 @@ class TestSimpleRequestHandler:
             },
         )
 
-    @pytest.mark.skip
     async def test_reply_into_webhook_file(self, bot: MockedBot, aiohttp_client):
         app = Application()
         dp = Dispatcher()
@@ -106,7 +105,6 @@ class TestSimpleRequestHandler:
         assert result["document"].startswith("attach://")
         assert result[result["document"][9:]]
 
-    @pytest.mark.skip
     async def test_reply_into_webhook_text(self, bot: MockedBot, aiohttp_client):
         app = Application()
         dp = Dispatcher()
