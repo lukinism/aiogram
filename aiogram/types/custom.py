@@ -2,7 +2,7 @@ import sys
 from datetime import datetime, timedelta, timezone
 from typing import Union
 
-from pydantic import PlainSerializer
+from pydantic import PlainSerializer, SerializationInfo
 from typing_extensions import Annotated
 
 if sys.platform == "win32":  # pragma: no cover
@@ -20,20 +20,21 @@ else:  # pragma: no cover
         return int(value.timestamp())
 
 
-def _datetime_serializer(dt: "DateTime") -> int:
-    if isinstance(dt, int):
+def _datetime_serializer(
+    dt: "DateTime", info: SerializationInfo
+) -> Union[datetime, timedelta, int]:
+    if info.mode == "python":
         return dt
     if isinstance(dt, timedelta):
-        dt = datetime.now() + dt
+        dt = datetime.now(timezone.utc) + dt
     return _datetime_to_timestamp(dt)
 
 
 # Make datetime compatible with Telegram Bot API (unixtime)
 DateTime = Annotated[
-    Union[datetime, timedelta, int],
+    Union[datetime, timedelta],
     PlainSerializer(
         func=_datetime_serializer,
-        return_type=int,
         when_used="unless-none",
     ),
 ]

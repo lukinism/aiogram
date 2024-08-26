@@ -1,16 +1,12 @@
-import datetime
 import json
 from typing import Any, AsyncContextManager, AsyncGenerator, Dict, Optional
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from pytz import utc
 
 from aiogram import Bot
-from aiogram.client.default import Default, DefaultBotProperties
 from aiogram.client.session.base import BaseSession, TelegramType
 from aiogram.client.telegram import PRODUCTION, TelegramAPIServer
-from aiogram.enums import ChatType, ParseMode, TopicIconColor
 from aiogram.exceptions import (
     ClientDecodeError,
     RestartingTelegram,
@@ -26,8 +22,7 @@ from aiogram.exceptions import (
     TelegramUnauthorizedError,
 )
 from aiogram.methods import DeleteMessage, GetMe, TelegramMethod
-from aiogram.types import UNSET_PARSE_MODE, LinkPreviewOptions, User
-from aiogram.types.base import UNSET_DISABLE_WEB_PAGE_PREVIEW, UNSET_PROTECT_CONTENT
+from aiogram.types import UNSET_PARSE_MODE, User
 from tests.mocked_bot import MockedBot
 
 
@@ -90,68 +85,6 @@ class TestBaseSession:
         session.api = api
         assert session.api == api
         assert "example.com" in session.api.base
-
-    @pytest.mark.skip
-    @pytest.mark.parametrize(
-        "value,result",
-        [
-            [None, None],
-            ["text", "text"],
-            [ChatType.PRIVATE, "private"],
-            [TopicIconColor.RED, "16478047"],
-            [42, "42"],
-            [True, "true"],
-            [["test"], '["test"]'],
-            [["test", ["test"]], '["test", ["test"]]'],
-            [[{"test": "pass", "spam": None}], '[{"test": "pass"}]'],
-            [{"test": "pass", "number": 42, "spam": None}, '{"test": "pass", "number": 42}'],
-            [{"foo": {"test": "pass", "spam": None}}, '{"foo": {"test": "pass"}}'],
-            [
-                datetime.datetime(
-                    year=2017, month=5, day=17, hour=4, minute=11, second=42, tzinfo=utc
-                ),
-                "1494994302",
-            ],
-            [
-                {"link_preview": LinkPreviewOptions(is_disabled=True)},
-                '{"link_preview": {"is_disabled": true}}',
-            ],
-        ],
-    )
-    def test_prepare_value(self, value: Any, result: str, bot: MockedBot):
-        session = CustomSession()
-
-        assert session.prepare_value(value, bot=bot, files={}) == result
-
-    @pytest.mark.skip
-    def test_prepare_value_timedelta(self, bot: MockedBot):
-        session = CustomSession()
-
-        value = session.prepare_value(datetime.timedelta(minutes=2), bot=bot, files={})
-        assert isinstance(value, str)
-
-    @pytest.mark.skip
-    def test_prepare_value_defaults_replace(self):
-        bot = MockedBot(
-            default=DefaultBotProperties(
-                parse_mode=ParseMode.HTML,
-                protect_content=True,
-                link_preview_is_disabled=True,
-            )
-        )
-        assert bot.session.prepare_value(Default("parse_mode"), bot=bot, files={}) == "HTML"
-        assert (
-            bot.session.prepare_value(Default("link_preview_is_disabled"), bot=bot, files={})
-            == "true"
-        )
-        assert bot.session.prepare_value(Default("protect_content"), bot=bot, files={}) == "true"
-
-    @pytest.mark.skip
-    def test_prepare_value_defaults_unset(self):
-        bot = MockedBot()
-        assert bot.session.prepare_value(UNSET_PARSE_MODE, bot=bot, files={}) is None
-        assert bot.session.prepare_value(UNSET_DISABLE_WEB_PAGE_PREVIEW, bot=bot, files={}) is None
-        assert bot.session.prepare_value(UNSET_PROTECT_CONTENT, bot=bot, files={}) is None
 
     @pytest.mark.parametrize(
         "status_code,content,error",

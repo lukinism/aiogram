@@ -1,30 +1,11 @@
 from __future__ import annotations
 
-import warnings
 from typing import Any, Optional
 
 from pydantic import BaseModel
 
 from aiogram.enums import ParseMode
 from aiogram.types import LinkPreviewOptions
-
-
-class Default:
-    # TODO: delete
-    __slots__ = ("_name",)
-
-    def __init__(self, name: str) -> None:
-        self._name = name
-
-    @property
-    def name(self) -> str:
-        return self._name
-
-    def __str__(self) -> str:
-        return f"Default({self._name!r})"
-
-    def __repr__(self) -> str:
-        return f"<{self}>"
 
 
 class DefaultBotProperties(BaseModel):
@@ -66,25 +47,6 @@ class DefaultBotProperties(BaseModel):
         link_preview_show_above_text: Optional[bool] = None,
         show_caption_above_media: Optional[bool] = None,
     ):
-        has_any_link_preview_option = any(
-            (
-                link_preview_is_disabled,
-                link_preview_prefer_small_media,
-                link_preview_prefer_large_media,
-                link_preview_show_above_text,
-            )
-        )
-        if has_any_link_preview_option:
-            warnings.warn(
-                "Passing `link_preview_is_disabled`, `link_preview_prefer_small_media`, "
-                "`link_preview_prefer_large_media`, and `link_preview_show_above_text` "
-                "to DefaultBotProperties initializer is deprecated. "
-                "These arguments will be removed in 3.14.0 version\n"
-                "Use `link_preview` instead.",
-                category=DeprecationWarning,
-                stacklevel=2,
-            )
-
         link_preview = link_preview or LinkPreviewOptions()
         link_preview = LinkPreviewOptions(
             is_disabled=link_preview.is_disabled or link_preview_is_disabled,

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import secrets
+import typing
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 from pydantic import BaseModel
@@ -12,6 +13,8 @@ from aiogram.types import InputFile
 
 if TYPE_CHECKING:
     from aiogram import Bot
+
+M = typing.TypeVar("M", bound=BaseModel)
 
 
 def extract_files_from_any(value: Any) -> Tuple[Any, Dict[str, InputFile]]:
@@ -47,7 +50,7 @@ def extract_files_from_dict(_dict: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict
     return modified_dict, dict_files
 
 
-def extract_files_from_model(model: BaseModel) -> Tuple[BaseModel, Dict[str, InputFile]]:
+def extract_files_from_model(model: M) -> Tuple[M, Dict[str, InputFile]]:
     model_files = {}
     update = {}
     for field_name, field_value in model:
@@ -59,7 +62,7 @@ def extract_files_from_model(model: BaseModel) -> Tuple[BaseModel, Dict[str, Inp
     return modified_model, model_files
 
 
-def replace_default_props(model: BaseModel, *, props: DefaultBotProperties) -> BaseModel:
+def replace_default_props(model: M, *, props: DefaultBotProperties) -> M:
     if not isinstance(model, BaseModel):  # simplify nested conditions
         return model
     update = {}
@@ -67,9 +70,9 @@ def replace_default_props(model: BaseModel, *, props: DefaultBotProperties) -> B
         field_value = getattr(model, field_name)
         if is_default_prop(field_info):
             default_name = get_default_prop_name(field_info)
-            replaced_value = field_value
-            if props[default_name] != props.model_fields[default_name].default:
-                replaced_value = props[default_name]
+            default_value = props[default_name]
+            unset_value = props.model_fields[default_name].default
+            replaced_value = default_value if default_value != unset_value else field_value
         elif isinstance(field_value, list):
             replaced_value = [replace_default_props(value, props=props) for value in field_value]
         elif isinstance(field_value, dict):
@@ -93,7 +96,7 @@ def construct_form_data(
     form_data = {}
     model, files = extract_files_from_model(model)
     model = replace_default_props(model, props=bot.default)
-    for key, value in model.model_dump(exclude_none=True).items():
+    for key, value in model.model_dump(mode="json", exclude_none=True).items():
         form_data[key] = serialize_form_value(value) if dumps else value
     return form_data, files
 

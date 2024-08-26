@@ -1,6 +1,5 @@
 from typing import Any, Optional, Type
 
-import pytest
 from pydantic import BaseModel
 
 from aiogram.client.default import DefaultBotProperties
@@ -52,7 +51,6 @@ class TestDefaultBotProperties:
 
         assert default_bot_properties.link_preview is None
 
-    @pytest.mark.filterwarnings("ignore::DeprecationWarning")
     def test_post_init_auto_fill_link_preview(self):
         default_bot_properties = DefaultBotProperties(
             link_preview_is_disabled=True,
