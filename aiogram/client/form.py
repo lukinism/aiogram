@@ -25,8 +25,6 @@ def extract_files_from_any(value: Any) -> Tuple[Any, Dict[str, InputFile]]:
         return extract_files_from_model(value)
     if isinstance(value, list):
         return extract_files_from_list(value)
-    if isinstance(value, dict):
-        return extract_files_from_dict(value)
     return value, {}
 
 
@@ -38,16 +36,6 @@ def extract_files_from_list(_list: List[Any]) -> Tuple[List[Any], Dict[str, Inpu
         modified_list.append(modified_item)
         list_files.update(item_files)
     return modified_list, list_files
-
-
-def extract_files_from_dict(_dict: Dict[str, Any]) -> Tuple[Dict[str, Any], Dict[str, InputFile]]:
-    modified_dict = {}
-    dict_files = {}
-    for key, value in _dict.items():
-        modified_value, value_files = extract_files_from_any(value)
-        modified_dict[key] = modified_value
-        dict_files.update(value_files)
-    return modified_dict, dict_files
 
 
 def extract_files_from_model(model: M) -> Tuple[M, Dict[str, InputFile]]:
@@ -63,8 +51,6 @@ def extract_files_from_model(model: M) -> Tuple[M, Dict[str, InputFile]]:
 
 
 def replace_default_props(model: M, *, props: DefaultBotProperties) -> M:
-    if not isinstance(model, BaseModel):  # simplify nested conditions
-        return model
     update = {}
     for field_name, field_info in model.model_fields.items():
         field_value = getattr(model, field_name)
@@ -74,12 +60,14 @@ def replace_default_props(model: M, *, props: DefaultBotProperties) -> M:
             unset_value = props.model_fields[default_name].default
             replaced_value = default_value if default_value != unset_value else field_value
         elif isinstance(field_value, list):
-            replaced_value = [replace_default_props(value, props=props) for value in field_value]
-        elif isinstance(field_value, dict):
-            replaced_value = {
-                key: replace_default_props(value, props=props)
-                for key, value in field_value.items()
-            }
+            replaced_value = [
+                (
+                    replace_default_props(value, props=props)
+                    if isinstance(value, BaseModel)
+                    else value
+                )
+                for value in field_value
+            ]
         else:
             replaced_value = field_value
         if field_value != replaced_value:
