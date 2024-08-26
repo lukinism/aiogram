@@ -16,12 +16,12 @@ from aiohttp import ClientError
 from aresponses import ResponsesMockServer
 
 from aiogram import Bot
-from aiogram.client.default import Default
+from aiogram.client.default_annotations import DefaultParseMode
 from aiogram.client.session import aiohttp
 from aiogram.client.session.aiohttp import AiohttpSession
 from aiogram.exceptions import TelegramNetworkError
 from aiogram.methods import TelegramMethod
-from aiogram.types import UNSET_PARSE_MODE, InputFile
+from aiogram.types import InputFile, UNSET_PARSE_MODE
 from tests.mocked_bot import MockedBot
 
 
@@ -107,7 +107,6 @@ class TestAiohttpSession:
 
         await session.close()
 
-    @pytest.mark.skip
     def test_build_form_data_with_data_only(self, bot: MockedBot):
         class TestMethod(TelegramMethod[bool]):
             __api_method__ = "test"
@@ -116,7 +115,7 @@ class TestAiohttpSession:
             str_: str
             int_: int
             bool_: bool
-            unset_: Union[str, Default] = Default("parse_mode")
+            unset_: DefaultParseMode = UNSET_PARSE_MODE
             null_: None
             list_: List[str]
             dict_: Dict[str, Any]
@@ -128,7 +127,6 @@ class TestAiohttpSession:
                 str_="value",
                 int_=42,
                 bool_=True,
-                unset_=Default("parse_mode"),
                 null_=None,
                 list_=["foo"],
                 dict_={"bar": "baz"},
@@ -140,7 +138,6 @@ class TestAiohttpSession:
         assert all(isinstance(field[2], str) for field in fields)
         assert "null_" not in [item[0]["name"] for item in fields]
 
-    @pytest.mark.skip
     def test_build_form_data_with_files(self, bot: Bot):
         class TestMethod(TelegramMethod[bool]):
             __api_method__ = "test"
@@ -177,7 +174,6 @@ class TestAiohttpSession:
         )
 
         async with AiohttpSession() as session:
-
             class TestMethod(TelegramMethod[int]):
                 __returning__ = int
                 __api_method__ = "method"
