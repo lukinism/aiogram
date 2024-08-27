@@ -5,7 +5,7 @@ import typing
 from typing import TYPE_CHECKING, Any, Dict, List, Tuple, Union
 
 from pydantic import BaseModel
-from pydantic_core import to_json
+from pydantic_core import from_json, to_json
 
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.default_annotations import get_default_prop_name, is_default_prop
@@ -85,14 +85,15 @@ def construct_form_data(
     model, files = extract_files_from_model(model)
     model = replace_default_props(model, props=bot.default)
     for key, value in model.model_dump(mode="json", exclude_none=True).items():
-        form_data[key] = serialize_form_value(value) if dumps else value
+        form_data[key] = json_dumps(value) if dumps else value
     return form_data, files
 
 
-def serialize_form_value(value: Any) -> str:
-    """
-    Prepare jsonable value to send
-    """
+def json_loads(value: str) -> Any:
+    return from_json(value)
+
+
+def json_dumps(value: Any) -> str:
     if isinstance(value, str):
         return value
     return to_json(value).decode()

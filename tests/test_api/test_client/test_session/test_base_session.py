@@ -142,7 +142,7 @@ class TestBaseSession:
         bot = MockedBot()
         method = DeleteMessage(chat_id=42, message_id=42)
 
-        with pytest.raises(ClientDecodeError, match="JSONDecodeError"):
+        with pytest.raises(ClientDecodeError):
             session.check_response(
                 bot=bot,
                 method=method,

@@ -15,8 +15,8 @@ from aiogram.client.default_annotations import (
 from aiogram.client.form import (
     construct_form_data,
     extract_files_from_model,
+    json_dumps,
     replace_default_props,
-    serialize_form_value,
 )
 from aiogram.enums import ChatType, ParseMode, TopicIconColor
 from aiogram.methods import BanChatMember, SendMediaGroup, SendMessage, SendPhoto
@@ -121,7 +121,7 @@ class TestReplaceDefaultProps:
         )
 
 
-class TestSerializeFormValue:
+class TestJsonDumps:
     @pytest.mark.parametrize(
         "value,result",
         [
@@ -141,5 +141,5 @@ class TestSerializeFormValue:
             ],
         ],
     )
-    def test_serialize_form_value(self, value: Any, result: str):
-        assert serialize_form_value(value) == result
+    def test_json_dumps(self, value: Any, result: str):
+        assert json_dumps(value) == result
