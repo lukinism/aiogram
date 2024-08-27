@@ -28,26 +28,26 @@ def extract_files_from_any(value: Any) -> Tuple[Any, Dict[str, InputFile]]:
     return value, {}
 
 
-def extract_files_from_list(_list: List[Any]) -> Tuple[List[Any], Dict[str, InputFile]]:
-    modified_list = []
-    list_files = {}
-    for item in _list:
+def extract_files_from_list(value: List[Any]) -> Tuple[List[Any], Dict[str, InputFile]]:
+    modified_value = []
+    files = {}
+    for item in value:
         modified_item, item_files = extract_files_from_any(item)
-        modified_list.append(modified_item)
-        list_files.update(item_files)
-    return modified_list, list_files
+        modified_value.append(modified_item)
+        files.update(item_files)
+    return modified_value, files
 
 
 def extract_files_from_model(model: M) -> Tuple[M, Dict[str, InputFile]]:
-    model_files = {}
+    files = {}
     update = {}
     for field_name, field_value in model:
         modified_value, field_files = extract_files_from_any(field_value)
         if field_files:
-            model_files.update(field_files)
+            files.update(field_files)
             update[field_name] = modified_value
     modified_model = model.model_copy(update=update)
-    return modified_model, model_files
+    return modified_model, files
 
 
 def replace_default_props(model: M, *, props: DefaultBotProperties) -> M:
