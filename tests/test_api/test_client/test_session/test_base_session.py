@@ -1,4 +1,5 @@
 import json
+import warnings
 from typing import Any, AsyncContextManager, AsyncGenerator, Dict, Optional
 from unittest.mock import AsyncMock, patch
 
@@ -56,35 +57,41 @@ class CustomSession(BaseSession):
 
 class TestBaseSession:
     def test_init_api(self):
-        session = CustomSession()
-        assert session.api == PRODUCTION
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            assert session.api == PRODUCTION
 
     def test_default_props(self):
-        session = CustomSession()
-        assert session.api == PRODUCTION
-        assert session.json_loads == json.loads
-        assert session.json_dumps == json.dumps
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            assert session.api == PRODUCTION
+            assert session.json_loads == json.loads
+            assert session.json_dumps == json.dumps
 
-        def custom_loads(*_):
-            return json.loads
+            def custom_loads(*_):
+                return json.loads
 
-        def custom_dumps(*_):
-            return json.dumps
+            def custom_dumps(*_):
+                return json.dumps
 
-        session.json_dumps = custom_dumps
-        assert session.json_dumps == custom_dumps
-        session.json_loads = custom_loads
-        assert session.json_loads == custom_loads
+            session.json_dumps = custom_dumps
+            assert session.json_dumps == custom_dumps
+            session.json_loads = custom_loads
+            assert session.json_loads == custom_loads
 
     def test_init_custom_api(self):
-        api = TelegramAPIServer(
-            base="http://example.com/{token}/{method}",
-            file="http://example.com/{token}/file/{path}",
-        )
-        session = CustomSession()
-        session.api = api
-        assert session.api == api
-        assert "example.com" in session.api.base
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            api = TelegramAPIServer(
+                base="http://example.com/{token}/{method}",
+                file="http://example.com/{token}/file/{path}",
+            )
+            session = CustomSession()
+            session.api = api
+            assert session.api == api
+            assert "example.com" in session.api.base
 
     @pytest.mark.parametrize(
         "status_code,content,error",
@@ -114,114 +121,130 @@ class TestBaseSession:
         ],
     )
     def test_check_response(self, status_code, content, error):
-        session = CustomSession()
-        bot = MockedBot()
-        method = DeleteMessage(chat_id=42, message_id=42)
-        if error is None:
-            session.check_response(
-                bot=bot,
-                method=method,
-                status_code=status_code,
-                content=content,
-            )
-        else:
-            with pytest.raises(error) as exc_info:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            bot = MockedBot()
+            method = DeleteMessage(chat_id=42, message_id=42)
+            if error is None:
                 session.check_response(
                     bot=bot,
                     method=method,
                     status_code=status_code,
                     content=content,
                 )
-            error: TelegramAPIError = exc_info.value
-            string = str(error)
-            if error.url:
-                assert error.url in string
+            else:
+                with pytest.raises(error) as exc_info:
+                    session.check_response(
+                        bot=bot,
+                        method=method,
+                        status_code=status_code,
+                        content=content,
+                    )
+                error: TelegramAPIError = exc_info.value
+                string = str(error)
+                if error.url:
+                    assert error.url in string
 
     def test_check_response_json_decode_error(self):
-        session = CustomSession()
-        bot = MockedBot()
-        method = DeleteMessage(chat_id=42, message_id=42)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            bot = MockedBot()
+            method = DeleteMessage(chat_id=42, message_id=42)
 
-        with pytest.raises(ClientDecodeError):
-            session.check_response(
-                bot=bot,
-                method=method,
-                status_code=200,
-                content="is not a JSON object",
-            )
+            with pytest.raises(ClientDecodeError):
+                session.check_response(
+                    bot=bot,
+                    method=method,
+                    status_code=200,
+                    content="is not a JSON object",
+                )
 
     def test_check_response_validation_error(self):
-        session = CustomSession()
-        bot = MockedBot()
-        method = DeleteMessage(chat_id=42, message_id=42)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            bot = MockedBot()
+            method = DeleteMessage(chat_id=42, message_id=42)
 
-        with pytest.raises(ClientDecodeError, match="ValidationError"):
-            session.check_response(
-                bot=bot,
-                method=method,
-                status_code=200,
-                content='{"ok": "test"}',
-            )
+            with pytest.raises(ClientDecodeError, match="ValidationError"):
+                session.check_response(
+                    bot=bot,
+                    method=method,
+                    status_code=200,
+                    content='{"ok": "test"}',
+                )
 
     async def test_make_request(self):
-        session = CustomSession()
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
 
-        assert await session.make_request("42:TEST", GetMe()) is None
+            assert await session.make_request("42:TEST", GetMe()) is None
 
     async def test_stream_content(self):
-        session = CustomSession()
-        stream = session.stream_content(
-            "https://www.python.org/static/img/python-logo.png",
-            headers={},
-            timeout=5,
-            chunk_size=65536,
-            raise_for_status=True,
-        )
-        assert isinstance(stream, AsyncGenerator)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            stream = session.stream_content(
+                "https://www.python.org/static/img/python-logo.png",
+                headers={},
+                timeout=5,
+                chunk_size=65536,
+                raise_for_status=True,
+            )
+            assert isinstance(stream, AsyncGenerator)
 
-        async for chunk in stream:
-            assert isinstance(chunk, bytes)
+            async for chunk in stream:
+                assert isinstance(chunk, bytes)
 
     async def test_context_manager(self):
-        session = CustomSession()
-        assert isinstance(session, AsyncContextManager)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            session = CustomSession()
+            assert isinstance(session, AsyncContextManager)
 
-        with patch(
-            "tests.test_api.test_client.test_session.test_base_session.CustomSession.close",
-            new_callable=AsyncMock,
-        ) as mocked_close:
-            async with session as ctx:
-                assert session == ctx
-            mocked_close.assert_awaited_once()
+            with patch(
+                "tests.test_api.test_client.test_session.test_base_session.CustomSession.close",
+                new_callable=AsyncMock,
+            ) as mocked_close:
+                async with session as ctx:
+                    assert session == ctx
+                mocked_close.assert_awaited_once()
 
     def test_add_middleware(self):
-        async def my_middleware(bot, method, make_request):
-            return await make_request(bot, method)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            async def my_middleware(bot, method, make_request):
+                return await make_request(bot, method)
 
-        session = CustomSession()
-        assert not session.middleware._middlewares
+            session = CustomSession()
+            assert not session.middleware._middlewares
 
-        session.middleware(my_middleware)
-        assert my_middleware in session.middleware
-        assert len(session.middleware) == 1
+            session.middleware(my_middleware)
+            assert my_middleware in session.middleware
+            assert len(session.middleware) == 1
 
     async def test_use_middleware(self, bot: MockedBot):
-        flag_before = False
-        flag_after = False
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", DeprecationWarning)
+            flag_before = False
+            flag_after = False
 
-        @bot.session.middleware
-        async def my_middleware(make_request, b, method):
-            nonlocal flag_before, flag_after
-            flag_before = True
-            try:
-                assert isinstance(b, Bot)
-                assert isinstance(method, TelegramMethod)
+            @bot.session.middleware
+            async def my_middleware(make_request, b, method):
+                nonlocal flag_before, flag_after
+                flag_before = True
+                try:
+                    assert isinstance(b, Bot)
+                    assert isinstance(method, TelegramMethod)
 
-                return await make_request(b, method)
-            finally:
-                flag_after = True
+                    return await make_request(b, method)
+                finally:
+                    flag_after = True
 
-        bot.add_result_for(GetMe, ok=True, result=User(id=42, is_bot=True, first_name="Test"))
-        assert await bot.get_me()
-        assert flag_before
-        assert flag_after
+            bot.add_result_for(GetMe, ok=True, result=User(id=42, is_bot=True, first_name="Test"))
+            assert await bot.get_me()
+            assert flag_before
+            assert flag_after
